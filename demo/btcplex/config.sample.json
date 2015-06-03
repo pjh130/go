@@ -1,0 +1,11 @@
+{
+	"bitcoind_rpc_url": "http://user:pass@localhost:8334",
+	"bitcoind_blocks_path": "/home/thomas/.bitcoin/blocks",
+	"redis_host": "localhost:6379",
+	"ssdb_host": "localhost:6381",
+	"leveldb_path": "/home/thomas/btcplex_leveldb",
+	"app_url": "https://btcplex.com",
+	"app_port": 6033,
+	"app_api_rate_limited": true,
+	"app_templates_path": "templates"
+}

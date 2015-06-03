@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	//	"strings"
-	"github.com/pjh130/common/filelib"
+	"github.com/pjh130/go/common/filelib"
 )
 
 func main() {
