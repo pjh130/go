@@ -137,10 +137,12 @@ func ReadDatas(db *sql.DB) error {
 			fmt.Println("len: ", len(refs))
 			for i := 0; i < len(refs); i++ {
 				val := reflect.ValueOf(refs[i])
+				//				fmt.Println("val.Kind: ", val.Kind())
 				if val.IsValid() {
 					ind := reflect.Indirect(val)
 					if ind.IsValid() {
 						el := ind.Elem()
+						fmt.Println("ind.Kind():", ind.Kind())
 						if el.IsValid() {
 							//							fmt.Println("Interface: ", el.Interface())
 							name := el.Type().String()
