@@ -1,18 +1,22 @@
 package main
 
-import(
+import (
+	"fmt"
+	"github.com/pjh130/go/common/imagelib"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
-	"fmt"
 	"os"
 	"strings"
 )
 
-func main(){
+func main() {
 	fmt.Println("--->", GetImageSuffix("./1.jpg"))
 	fmt.Println("--->", GetImageSuffix("./1.gif"))
 	fmt.Println("--->", GetImageSuffix("./1.png"))
+
+	imagelib.Png2jpg("./1.png", "./png2jpg.jpg")
+	imagelib.Jpg2png("./1.jpg", "./jpg2png.png")
 }
 
 //返回图片后缀
@@ -27,7 +31,7 @@ func GetImageSuffix(fileName string) string {
 		defer fileJpg.Close()
 		_, err = jpeg.Decode(fileJpg)
 		if nil != err {
-//			fmt.Println("jpeg :", err)
+			//			fmt.Println("jpeg :", err)
 		} else {
 			suf = "jpg"
 			return suf
@@ -42,7 +46,7 @@ func GetImageSuffix(fileName string) string {
 		defer fileGif.Close()
 		_, err = gif.Decode(fileGif)
 		if nil != err {
-//			fmt.Println("gif :", err)
+			//			fmt.Println("gif :", err)
 		} else {
 			suf = "gif"
 			return suf
@@ -54,7 +58,7 @@ func GetImageSuffix(fileName string) string {
 		defer filePng.Close()
 		_, err = png.Decode(filePng)
 		if nil != err {
-//			fmt.Println("png :", err)
+			//			fmt.Println("png :", err)
 		} else {
 			suf = "png"
 			return suf
