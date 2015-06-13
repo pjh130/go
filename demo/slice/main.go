@@ -12,7 +12,11 @@ func main() {
 	var mySlice3 []int = myArray[5:]
 	var mySlice4 []int = myArray[:]
 
-	fmt.Println("数组中的元素：")
+	fmt.Println("数组中的元素下标：")
+	for v := range myArray {
+		fmt.Print(v, " ")
+	}
+
 	for _, v := range myArray {
 		fmt.Print(v, " ")
 	}
