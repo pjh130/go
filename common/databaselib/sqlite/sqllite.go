@@ -6,6 +6,22 @@ _ "github.com/pjh130/go/common/databaselib/sqlite"
 才能注册Provider
 */
 
+/*
+Supported Types
++------------------------------+
+|go        | sqlite3           |
+|----------|-------------------|
+|nil       | null              |
+|int       | integer           |
+|int64     | integer           |
+|float64   | float             |
+|bool      | integer           |
+|[]byte    | blob              |
+|string    | text              |
+|time.Time | timestamp/datetime|
++------------------------------+
+*/
+
 import (
 	"database/sql"
 	"fmt"

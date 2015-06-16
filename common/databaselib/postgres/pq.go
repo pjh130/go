@@ -2,28 +2,29 @@ package databaselib
 
 /*
 使用说明必须添加
-_ "github.com/pjh130/go/common/databaselib/odbc"
+_ "github.com/pjh130/go/common/databaselib/postgres"
 才能注册Provider
 */
 
 import (
 	"database/sql"
+	_ "github.com/lib/pq"
 	"github.com/pjh130/go/common/databaselib"
-	_ "github.com/weigj/go-odbc"
 	"log"
 )
 
-type OdbcProvider struct {
+type PqProvider struct {
 	savePath string
 	bOk      bool
 	db       *sql.DB
 }
 
-var odbcpder = &OdbcProvider{}
+var pqpder = &PqProvider{}
 
-func (this *OdbcProvider) DbInit(config string) error {
+func (this *PqProvider) DbInit(config string) error {
 	this.bOk = false
-	db, err := sql.Open("odbc", config)
+	//db, err := sql.Open("postgres", "user=pqgotest dbname=pqgotest sslmode=verify-full")
+	db, err := sql.Open("postgres", config)
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -42,7 +43,7 @@ func (this *OdbcProvider) DbInit(config string) error {
 	return nil
 }
 
-func (this *OdbcProvider) GetDb() *sql.DB {
+func (this *PqProvider) GetDb() *sql.DB {
 	if this.bOk == true {
 		return this.db
 	}
@@ -50,11 +51,11 @@ func (this *OdbcProvider) GetDb() *sql.DB {
 	return nil
 }
 
-func (this *OdbcProvider) Exec(query string, args ...interface{}) (sql.Result, error) {
+func (this *PqProvider) Exec(query string, args ...interface{}) (sql.Result, error) {
 
 	return this.db.Exec(query, args...)
 }
 
 func init() {
-	databaselib.Register("odbc", odbcpder)
+	databaselib.Register("postgres", pqpder)
 }
