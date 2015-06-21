@@ -14,6 +14,7 @@ import (
 
 func main() {
 	fmt.Println("Hello world!")
+	fmt.Println("os.PathSeparator:", string(os.PathSeparator))
 	v := "E:\\qq_chat"
 	//	files, err := filelib.WalkDirAll(v)
 	//	files, err := filelib.WalkDirFiles(v, "")

@@ -62,7 +62,7 @@ func Test3() {
 		fmt.Printf("se.Speak()=%v\n", m.Speak())
 	}
 	fmt.Printf("Source Instance te=%v\n", te)
-	fmt.Printf("\n")
+	fmt.Printf("1111111111111111111111111111111111\n")
 
 	t2 := TestRef2(tea)
 	//if m, ok := reflect.New(t2).Interface().(Speaker); ok {
@@ -74,7 +74,7 @@ func Test3() {
 		fmt.Printf("se.Speak()=%v\n", m.Speak())
 	}
 	fmt.Printf("Source Instance te=%v\n", te)
-	fmt.Printf("\n")
+	fmt.Printf("222222222222222222222222222222222222\n")
 
 	t3 := TestRef3(te)
 	if m, ok := reflect.New(t3).Interface().(Speaker); ok {
@@ -85,7 +85,7 @@ func Test3() {
 		fmt.Printf("se.Speak()=%v\n", m.Speak())
 	}
 	fmt.Printf("Source Instance te=%v\n", te)
-	fmt.Printf("\n")
+	fmt.Printf("3333333333333333333333333333333333333\n")
 
 	fmt.Printf("reflect.TypeOf(tea)=%v\n", reflect.TypeOf(tea))
 	fmt.Printf("reflect.TypeOf(tea).Elem()=%v\n", reflect.TypeOf(tea).Elem())
