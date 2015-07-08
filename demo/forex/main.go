@@ -28,7 +28,7 @@ func main() {
 	}
 
 	//开始收集数据
-	//	go StartCollect()
+	go models.StartCollect()
 
 	if true {
 		code1, err1 := models.GetCode("HKD")
