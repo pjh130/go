@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"io"
 	"log"
@@ -30,7 +29,7 @@ func InitMoneyCode() {
 	//打开文件，并进行相关处理
 	f, err := os.Open(RES_FILE)
 	if err != nil {
-		fmt.Printf("%v\n", err)
+		log.Fatal(err)
 		return
 	}
 
@@ -49,20 +48,20 @@ func InitMoneyCode() {
 			if len(temp) > 0 {
 				var hzRegexp = regexp.MustCompile(`\s+`)
 				items := hzRegexp.Split(temp, -1)
-				//				fmt.Println("len: ", len(items))
+				//				log.Println("len: ", len(items))
 				if len(items) >= 3 {
 					var code MoneyCode
 					code.Country = strings.TrimSpace(items[0])
 					code.Name = strings.TrimSpace(items[1])
 					code.Code = strings.TrimSpace(items[2])
-					//					fmt.Println(code.Country, code.Name, code.Code)
+					//					log.Println(code.Country, code.Name, code.Code)
 					CodeList = append(CodeList, code)
 				}
 			}
 		}
 	}
 
-	fmt.Println("CodeList length: ", len(CodeList))
+	log.Println("CodeList length: ", len(CodeList))
 }
 
 func StartCollect() {
@@ -82,6 +81,8 @@ func StartCollect() {
 		go ForexSina(add)
 
 		time.Sleep(3 * time.Second)
+
+		//		break
 	}
 	//		}
 	//	}
@@ -96,13 +97,13 @@ func ForexSina(item Forex) {
 		}
 	}()
 
-	fmt.Println("start forex:", item.Code)
+	log.Println("start forex:", item.Code)
 
 	//如果传入的价格是CNY，不做查找
 	if "CNY" == item.Code {
 		item.Rate = 100
 		item.Modify = time.Now()
-		fmt.Println("rate:", rate)
+		log.Println("rate:", item.Rate)
 
 		InsertCode(item)
 		return
@@ -123,6 +124,22 @@ func ForexSina(item Forex) {
 
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	//查找支持的货币类型
+	bSpupport := false
+	doc.Find("#money_code").Find("option").Each(func(i int, s *goquery.Selection) {
+		v, _ := s.Attr("value")
+		if item.Code == v {
+			bSpupport = true
+		}
+	})
+
+	//如果不支持，中断本次查找
+	if false == bSpupport {
+		log.Println("Not support: ", item.Code)
 		return
 	}
 
@@ -136,7 +153,7 @@ func ForexSina(item Forex) {
 	if nil == err {
 		item.Rate = rate
 		item.Modify = time.Now()
-		fmt.Println("rate:", rate)
+		log.Println("rate:", rate)
 
 		InsertCode(item)
 	}

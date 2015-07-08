@@ -45,22 +45,31 @@ func IsTableExist(tableName string) bool {
 		return false
 	}
 	//SELECT count(*) FROM sqlite_master WHERE type='table' AND name='tableName';
-	str := "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='"
-	str = str + tableName + "'"
+	str := "SELECT count(*) FROM sqlite_master WHERE type='table' AND name= ?"
 
-	rows, err := dbbase.Query(str)
-	if err != nil {
-		log.Fatal(err)
-		return false
+	var count int
+	if false {
+		rows, err := dbbase.Query(str, tableName)
+		if err != nil {
+			log.Fatal(err)
+			return false
+		}
+
+		defer rows.Close()
+		for rows.Next() {
+			rows.Scan(&count)
+		}
+	} else {
+		err := dbbase.QueryRow(str, tableName).Scan(&count)
+		if err != nil {
+			log.Fatal(err)
+			return false
+		}
 	}
 
-	defer rows.Close()
-	for rows.Next() {
-		var count int
-		rows.Scan(&count)
-		if count > 0 {
-			return true
-		}
+	if count > 0 {
+		log.Println("Table", tableName, "exist!")
+		return true
 	}
 
 	return false
@@ -92,23 +101,19 @@ func InitCodeTable() error {
 func GetCode(code string) (Forex, error) {
 	var v Forex
 
-	rows, err := dbbase.Query("SELECT * FROM forex WHERE code = '" + code + "'")
+	err := dbbase.QueryRow("SELECT * FROM forex WHERE code = ?", code).Scan(&v.Id,
+		&v.Country, &v.Name, &v.Code, &v.Rate, &v.Modify)
 	if err != nil {
 		log.Fatal(err)
 		return v, err
 	}
-
-	if rows.Next() {
-		err = rows.Scan(&v.Id, &v.Country, &v.Name, &v.Code, &v.Rate, &v.Modify)
-	}
-	rows.Close()
 
 	return v, err
 }
 
 func InsertCode(add Forex) error {
 	//判断是否存在
-	rows, err := dbbase.Query("SELECT * FROM forex WHERE code = '" + add.Code + "'")
+	rows, err := dbbase.Query("SELECT * FROM forex WHERE code = ?", add.Code)
 	if err != nil {
 		log.Fatal(err)
 		return err
