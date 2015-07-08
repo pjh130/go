@@ -3,6 +3,7 @@ package models
 import (
 	"bufio"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/pjh130/go/demo/forex/utils"
 	"io"
 	"log"
 	"os"
@@ -66,26 +67,26 @@ func InitMoneyCode() {
 
 func StartCollect() {
 
-	//	ticker := time.NewTicker(30 * time.Minute)
-	//	for {
-	//		select {
-	//		case <-ticker.C:
-	for i := 0; i < len(CodeList); i++ {
-		item := CodeList[i]
+	ticker := time.NewTicker(time.Duration(utils.WAIT_TIME) * time.Minute)
+	for {
+		select {
+		case <-ticker.C:
+			for i := 0; i < len(CodeList); i++ {
+				item := CodeList[i]
 
-		var add Forex
-		add.Country = item.Country
-		add.Name = item.Name
-		add.Code = item.Code
+				var add Forex
+				add.Country = item.Country
+				add.Name = item.Name
+				add.Code = item.Code
 
-		go ForexSina(add)
+				go ForexSina(add)
 
-		time.Sleep(3 * time.Second)
+				time.Sleep(3 * time.Second)
 
-		//		break
+				//		break
+			}
+		}
 	}
-	//		}
-	//	}
 }
 
 //注：100外币 兑 人民币
