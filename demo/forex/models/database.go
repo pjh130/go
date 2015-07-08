@@ -1,7 +1,9 @@
-package main
+package models
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"time"
@@ -100,12 +102,21 @@ func InitCodeTable() error {
 
 func GetCode(code string) (Forex, error) {
 	var v Forex
+	if len(code) <= 0 {
+		return v, errors.New("Query code is empty")
+	}
 
-	err := dbbase.QueryRow("SELECT * FROM forex WHERE code = ?", code).Scan(&v.Id,
-		&v.Country, &v.Name, &v.Code, &v.Rate, &v.Modify)
+	rows, err := dbbase.Query("SELECT * FROM forex WHERE code = ?", code)
 	if err != nil {
 		log.Fatal(err)
 		return v, err
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		rows.Scan(&v.Id, &v.Country, &v.Name, &v.Code, &v.Rate, &v.Modify)
+	} else {
+		return v, errors.New(fmt.Sprintf("Found nothing [ %s ]", code))
 	}
 
 	return v, err

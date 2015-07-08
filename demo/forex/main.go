@@ -2,22 +2,26 @@ package main
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/pjh130/go/demo/forex/models"
 	_ "github.com/pjh130/go/demo/forex/router"
+	"github.com/pjh130/go/demo/forex/utils"
 	"log"
 	//	"time"
 )
 
 func main() {
+	//
+	utils.InitConfig()
 
-	InitMoneyCode()
+	models.InitMoneyCode()
 
-	err := InitDb()
+	err := models.InitDb()
 	if nil != err {
 		log.Println(err)
 		return
 	}
 
-	err = InitCodeTable()
+	err = models.InitCodeTable()
 	if nil != err {
 		log.Println(err)
 		return
@@ -27,14 +31,14 @@ func main() {
 	//	go StartCollect()
 
 	if true {
-		code1, err1 := GetCode("HKD")
+		code1, err1 := models.GetCode("HKD")
 		if nil != err1 {
 			log.Println(err1)
 		} else {
 			log.Println(code1)
 		}
 
-		code2, err2 := GetCode("JPY")
+		code2, err2 := models.GetCode("JPY")
 		if nil != err2 {
 			log.Println(err2)
 		} else {
@@ -44,7 +48,6 @@ func main() {
 		log.Println(code1.Rate / code2.Rate)
 	}
 
-	//	beego.RunMode = "prod"
 	beego.Run()
 
 	//只是测试阻塞用
