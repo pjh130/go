@@ -30,7 +30,7 @@ func InitMoneyCode() {
 	//打开文件，并进行相关处理
 	f, err := os.Open(RES_FILE)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return
 	}
 
@@ -49,13 +49,11 @@ func InitMoneyCode() {
 			if len(temp) > 0 {
 				var hzRegexp = regexp.MustCompile(`\s+`)
 				items := hzRegexp.Split(temp, -1)
-				//				log.Println("len: ", len(items))
 				if len(items) >= 3 {
 					var code MoneyCode
 					code.Country = strings.TrimSpace(items[0])
 					code.Name = strings.TrimSpace(items[1])
 					code.Code = strings.TrimSpace(items[2])
-					//					log.Println(code.Country, code.Name, code.Code)
 					CodeList = append(CodeList, code)
 				}
 			}
@@ -66,26 +64,31 @@ func InitMoneyCode() {
 }
 
 func StartCollect() {
-
-	ticker := time.NewTicker(time.Duration(utils.WAIT_TIME) * time.Minute)
-	for {
-		select {
-		case <-ticker.C:
-			for i := 0; i < len(CodeList); i++ {
-				item := CodeList[i]
-
-				var add Forex
-				add.Country = item.Country
-				add.Name = item.Name
-				add.Code = item.Code
-
-				go ForexSina(add)
-
-				time.Sleep(3 * time.Second)
-
-				//		break
+	if false {
+		go CollectData()
+	} else {
+		ticker := time.NewTicker(time.Duration(utils.WAIT_TIME) * time.Minute)
+		for {
+			select {
+			case <-ticker.C:
+				go CollectData()
 			}
 		}
+	}
+}
+
+func CollectData() {
+	for i := 0; i < len(CodeList); i++ {
+		item := CodeList[i]
+
+		var add Forex
+		add.Country = item.Country
+		add.Name = item.Name
+		add.Code = item.Code
+
+		go ForexSina(add)
+
+		time.Sleep(3 * time.Second)
 	}
 }
 
@@ -94,17 +97,17 @@ func ForexSina(item Forex) {
 
 	defer func() {
 		if err := recover(); err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 	}()
 
-	log.Println("start forex:", item.Code)
+	log.Println("Start forex:", item.Code)
 
 	//如果传入的价格是CNY，不做查找
 	if "CNY" == item.Code {
-		item.Rate = 100
+		item.Rate = 1
 		item.Modify = time.Now()
-		log.Println("rate:", item.Rate)
+		log.Println(item.Code, " : ", item.Rate)
 
 		InsertCode(item)
 		return
@@ -125,7 +128,7 @@ func ForexSina(item Forex) {
 
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return
 	}
 
@@ -152,9 +155,9 @@ func ForexSina(item Forex) {
 
 	rate, err := strconv.ParseFloat(v, 64)
 	if nil == err {
-		item.Rate = rate
+		item.Rate = rate / 100
 		item.Modify = time.Now()
-		log.Println("rate:", rate)
+		log.Println(item.Code, " : ", rate)
 
 		InsertCode(item)
 	}

@@ -21,7 +21,7 @@ type OnlineUser struct {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	dumx := Person{
+	zoro := Person{
 		Name:    "zoro",
 		Age:     27,
 		Emails:  []string{"dg@gmail.com", "dk@hotmail.com"},
@@ -30,7 +30,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	chxd := Person{Name: "chxd", Age: 27, Emails: []string{"test@gmail.com", "d@hotmail.com"}}
 
-	onlineUser := OnlineUser{User: []*Person{&dumx, &chxd}}
+	onlineUser := OnlineUser{User: []*Person{&zoro, &chxd}}
 
 	t := template.New("Person template")
 	t, err := t.Parse(templ)

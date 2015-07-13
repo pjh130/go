@@ -5,7 +5,8 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/pjh130/go/demo/forex/models"
 	"github.com/pjh130/go/demo/forex/utils"
-	//	"log"
+	"strconv"
+	"strings"
 )
 
 type ForexBase struct {
@@ -16,16 +17,18 @@ type ForexPair struct {
 	beego.Controller
 }
 
-func (this *ForexBase) All() {
-	callback := this.Input().Get("callback")
+type ForexList struct {
+	beego.Controller
+}
 
-	code := this.Input().Get("code")
-	data, err := models.GetCode(code)
+func (this *ForexList) All() {
+	callback := this.Input().Get("callback")
+	count, _ := strconv.Atoi(this.Input().Get("count"))
+	data, err := models.GetCodes(0, count)
 
 	var result utils.Result
 	if nil == err {
 		result.Code = 0
-		data.Rate = data.Rate / 100
 		result.Data = data
 	} else {
 		result.Code = -1
@@ -41,7 +44,34 @@ func (this *ForexBase) All() {
 		this.ServeJson()
 		return
 	}
+}
 
+func (this *ForexBase) All() {
+	callback := this.Input().Get("callback")
+
+	//都转成缩写的大写字母
+	code := strings.ToUpper(this.Input().Get("code"))
+	data, err := models.GetCode(code)
+
+	var result utils.Result
+	if nil == err {
+		result.Code = 0
+		data.Rate = data.Rate
+		result.Data = data
+	} else {
+		result.Code = -1
+		result.Msg = fmt.Sprintf("%s", err)
+	}
+
+	if len(callback) > 0 {
+		this.Data["jsonp"] = result
+		this.ServeJsonp()
+		return
+	} else {
+		this.Data["json"] = result
+		this.ServeJson()
+		return
+	}
 }
 
 func (this *ForexBase) Get() {
@@ -56,10 +86,12 @@ func (this *ForexPair) All() {
 	callback := this.Input().Get("callback")
 	var result utils.Result
 
-	code1 := this.Input().Get("code1")
+	//都转成缩写的大写字母
+	code1 := strings.ToUpper(this.Input().Get("code1"))
 	data1, err1 := models.GetCode(code1)
 
-	code2 := this.Input().Get("code2")
+	//都转成缩写的大写字母
+	code2 := strings.ToUpper(this.Input().Get("code2"))
 	data2, err2 := models.GetCode(code2)
 
 	if nil != err1 || nil != err2 {
