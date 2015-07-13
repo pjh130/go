@@ -18,7 +18,7 @@ func main() {
 	models.InitMoneyCode()
 
 	//开始收集数据
-	models.StartCollect()
+	go models.StartCollect()
 
 	beego.Run()
 }

@@ -23,7 +23,9 @@ RESTful Controller 路由
 */
 
 func init() {
-	beego.Router("/forex", &controllers.ForexBase{}, "*:All")
+	beego.Router("/forex/doc", &controllers.ForexDoc{}, "*:All")
+
+	beego.Router("/forex/one", &controllers.ForexBase{}, "*:All")
 
 	beego.Router("/forex/pair", &controllers.ForexPair{}, "*:All")
 

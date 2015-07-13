@@ -19,12 +19,12 @@ const (
 )
 
 type Forex struct {
-	Id      int
-	Country string
-	Name    string
-	Code    string
-	Rate    float64
-	Modify  time.Time
+	Id      int       `json:"id"`
+	Country string    `json:"country"`
+	Name    string    `json:"name"`
+	Code    string    `json:"code"`
+	Rate    float64   `json:"rate"`
+	Modify  time.Time `json:"modify"`
 }
 
 func GetCode(code string) (Forex, error) {
