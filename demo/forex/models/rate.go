@@ -19,12 +19,12 @@ const (
 )
 
 type Forex struct {
-	Id      int       `json:"id"`
-	Country string    `json:"country"`
-	Name    string    `json:"name"`
-	Code    string    `json:"code"`
-	Rate    float64   `json:"rate"`
-	Modify  time.Time `json:"modify"`
+	Id        int       `json:"id"`
+	Country   string    `json:"country"`
+	Name      string    `json:"name"`
+	MoneyCode string    `json:"money_code"`
+	Rate      float64   `json:"rate"`
+	Modify    time.Time `json:"modify"`
 }
 
 func GetCode(code string) (Forex, error) {
@@ -36,7 +36,7 @@ func GetCode(code string) (Forex, error) {
 		return v, err
 	}
 
-	err = o.Raw("SELECT * FROM forex WHERE code = ?", code).QueryRow(&v)
+	err = o.Raw("SELECT * FROM forex WHERE money_code = ?", code).QueryRow(&v)
 
 	return v, err
 }
@@ -77,7 +77,7 @@ func InsertCode(add Forex) error {
 	//判断是否存在数据
 	bFind := false
 	var v Forex
-	err = o.Raw("SELECT * FROM forex WHERE code = ?", add.Code).QueryRow(&v)
+	err = o.Raw("SELECT * FROM forex WHERE money_code = ?", add.MoneyCode).QueryRow(&v)
 	if err != nil {
 		if err != orm.ErrNoRows {
 			log.Println(err)
@@ -89,7 +89,7 @@ func InsertCode(add Forex) error {
 
 	if bFind {
 		//更新原有数据
-		result, err := o.Raw("UPDATE forex SET rate = ?, modify = ? WHERE code = ?", add.Rate, add.Modify, add.Code).Exec()
+		result, err := o.Raw("UPDATE forex SET rate = ?, modify = ? WHERE money_code = ?", add.Rate, add.Modify, add.MoneyCode).Exec()
 		if nil != err {
 			if err != orm.ErrNoRows {
 				log.Println(err)

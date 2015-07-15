@@ -84,7 +84,7 @@ func CollectData() {
 		var add Forex
 		add.Country = item.Country
 		add.Name = item.Name
-		add.Code = item.Code
+		add.MoneyCode = item.Code
 
 		go ForexSina(add)
 
@@ -101,13 +101,13 @@ func ForexSina(item Forex) {
 		}
 	}()
 
-	log.Println("Start forex:", item.Code)
+	log.Println("Start forex:", item.MoneyCode)
 
 	//如果传入的价格是CNY，不做查找
-	if "CNY" == item.Code {
+	if "CNY" == item.MoneyCode {
 		item.Rate = 1
 		item.Modify = time.Now()
-		log.Println(item.Code, " : ", item.Rate)
+		log.Println(item.MoneyCode, " : ", item.Rate)
 
 		InsertCode(item)
 		return
@@ -123,7 +123,7 @@ func ForexSina(item Forex) {
 	url := "http://biz.finance.sina.com.cn/forex/forex.php?"
 	url = url + "startdate=" + startdate
 	url = url + "&enddate=" + enddate
-	url = url + "&money_code=" + item.Code
+	url = url + "&money_code=" + item.MoneyCode
 	url = url + "&type=0"
 
 	doc, err := goquery.NewDocument(url)
@@ -136,14 +136,14 @@ func ForexSina(item Forex) {
 	bSpupport := false
 	doc.Find("#money_code").Find("option").Each(func(i int, s *goquery.Selection) {
 		v, _ := s.Attr("value")
-		if item.Code == v {
+		if item.MoneyCode == v {
 			bSpupport = true
 		}
 	})
 
 	//如果不支持，中断本次查找
 	if false == bSpupport {
-		log.Println("Not support: ", item.Code)
+		log.Println("Not support: ", item.MoneyCode)
 		return
 	}
 
@@ -157,7 +157,7 @@ func ForexSina(item Forex) {
 	if nil == err {
 		item.Rate = rate / 100
 		item.Modify = time.Now()
-		log.Println(item.Code, " : ", rate)
+		log.Println(item.MoneyCode, " : ", rate)
 
 		InsertCode(item)
 	}

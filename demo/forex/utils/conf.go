@@ -91,7 +91,7 @@ func CreateCodeTable() error {
 	CREATE TABLE forex (id integer not null PRIMARY KEY, 
 	country varchar(32),
 	name varchar(32),
-	code varchar(3) UNIQUE,
+	money_code varchar(3) UNIQUE,
 	rate float,
 	modify datetime);
 	`

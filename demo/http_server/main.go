@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -93,6 +94,10 @@ func (*myHandler3) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if h, ok := router[r.URL.String()]; ok {
 		h(w, r)
+	} else if strings.HasPrefix(r.URL.String(), "/static") {
+		//文件服务器
+		had := http.StripPrefix("/static", http.FileServer(http.Dir("static")))
+		had.ServeHTTP(w, r)
 	} else {
 		io.WriteString(w, "no router")
 	}

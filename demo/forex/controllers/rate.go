@@ -50,7 +50,7 @@ func (this *ForexBase) All() {
 	callback := this.Input().Get("callback")
 
 	//都转成缩写的大写字母
-	code := strings.ToUpper(this.Input().Get("code"))
+	code := strings.ToUpper(this.Input().Get("money_code"))
 	data, err := models.GetCode(code)
 
 	var result utils.Result
@@ -87,11 +87,11 @@ func (this *ForexPair) All() {
 	var result utils.Result
 
 	//都转成缩写的大写字母
-	code1 := strings.ToUpper(this.Input().Get("code1"))
+	code1 := strings.ToUpper(this.Input().Get("money_code1"))
 	data1, err1 := models.GetCode(code1)
 
 	//都转成缩写的大写字母
-	code2 := strings.ToUpper(this.Input().Get("code2"))
+	code2 := strings.ToUpper(this.Input().Get("money_code2"))
 	data2, err2 := models.GetCode(code2)
 
 	if nil != err1 || nil != err2 {
