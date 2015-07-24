@@ -2,7 +2,6 @@ package ormlib
 
 import (
 	"database/sql"
-	"github.com/astaxie/beedb"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
@@ -10,45 +9,8 @@ import (
 	"time"
 )
 
-//https://github.com/astaxie/beedb
-func Example1() {
-	db, err := sql.Open("mymysql", "test/xiemengjun/123456")
-	if err != nil {
-		panic(err)
-	}
-	orm := beedb.New(db)
-
-	//Open Debug log, turn on the debug
-	beedb.OnDebug = true
-
-	/////////////
-	type Userinfo struct {
-		Uid        int       `beedb:"PK" sql:"UID" tname:"USER_INFO"` //if the table's PrimaryKey is not "Id", use this tag
-		Username   string    `sql:"USERNAME"`
-		Departname string    `sql:"DEPARTNAME"`
-		Created    time.Time `sql:"CREATED"`
-	}
-
-	var saveone Userinfo
-	//Create an object and save it
-	if true {
-		saveone.Username = "Test Add User"
-		saveone.Departname = "Test Add Departname"
-		saveone.Created = time.Now()
-		orm.Save(&saveone)
-	}
-
-	//Saving new and existing objects
-	if true {
-		saveone.Username = "Update Username"
-		saveone.Departname = "Update Departname"
-		saveone.Created = time.Now()
-		orm.Save(&saveone) //now saveone has the primarykey value it will update
-	}
-}
-
 //https://github.com/jinzhu/gorm
-func Example2() {
+func ExampleGorm() {
 	db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 	// db, err := gorm.Open("foundation", "dbname=gorm") // FoundationDB.
 	// db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
