@@ -12,6 +12,13 @@ import (
 	"strings"
 )
 
+// 检查文件或目录是否存在
+// 如果由 filename 指定的文件或目录存在则返回 true，否则返回 false
+func IsExist(filename string) bool {
+	_, err := os.Stat(filename)
+	return err == nil || os.IsExist(err)
+}
+
 func IsDir(dirpath string) (bool, error) {
 	finfo, err := os.Stat(dirpath)
 
@@ -101,7 +108,7 @@ func WalkDirAll(dirPth string) (files []string, err error) {
 	return files, err
 }
 
-//获取指定目录及所有子目录下的所有文件和文件夹
+//获取指定目录及所有子目录下的文件夹
 func WalkSubDirs(dirPth string) (dirs []string, err error) {
 	dirs = make([]string, 0, 30)                                                         //忽略后缀匹配的大小写
 	err = filepath.Walk(dirPth, func(filename string, fi os.FileInfo, err error) error { //遍历目录

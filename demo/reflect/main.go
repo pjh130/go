@@ -5,6 +5,10 @@ import (
 )
 
 func main() {
+	Example1()
+	Example2()
+	Example3()
+	Example4()
 	//	fmt.Println("reflect")
 
 	//	Test1()

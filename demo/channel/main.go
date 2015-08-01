@@ -10,8 +10,8 @@ var i int = 1
 func main() {
 	//	channelTest1()
 	//	channelTest2()
-	//	channelTest3()
-	channelTest4()
+	channelTest3()
+	//	channelTest4()
 }
 
 func channelTest1() {
@@ -75,35 +75,41 @@ func createCounter(start int) chan int {
 func channelTest3() {
 	count := 20
 	ch := make(chan int, count)
-	for i := 0; i < count; i++ {
-		//ch <- i
-		ch <- i
-	}
+	go func() {
+		for i := 0; i < count; i++ {
+			ch <- i + 1
+		}
+		//		close(ch)
+	}()
 
-	select {
-	case ch <- 1:
-	default:
-		fmt.Println("channel is full:")
-	}
+	go func() {
+		for i := range ch {
+			fmt.Println("Received:", i)
+		}
+	}()
 
-	//for i := range ch {
-	//	fmt.Println("Received:", i)
-	//}
-
-	var bBreak bool = false
-
+	//	tick := time.NewTicker(3*time.Second)
 	for {
 		select {
-		case a := <-ch:
-			fmt.Println("Received: ", a)
-		default:
-			bBreak = true
-		}
-		if true == bBreak {
-			fmt.Println("break")
-			break
+		case <-time.After(3 * time.Second):
+			fmt.Println(time.Now())
 		}
 	}
+
+	//	var bBreak bool = false
+
+	//	for {
+	//		select {
+	//		case a := <-ch:
+	//			fmt.Println("Received: ", a)
+	//		default:
+	//			bBreak = true
+	//		}
+	//		if true == bBreak {
+	//			fmt.Println("break")
+	//			break
+	//		}
+	//	}
 }
 func channelTest4() {
 	tab := []int{1, 3, 0, 5}
