@@ -37,7 +37,8 @@ func main() {
 	contextType := bodyWrite.FormDataContentType()
 	bodyWrite.Close()
 
-	resp, err := http.Post("http://localhost:8080/upload", contextType, bodyBuf)
+	//	resp, err := http.Post("http://localhost:8080/upload", contextType, bodyBuf)
+	resp, err := http.Post("http://localhost:60000", contextType, bodyBuf)
 	if nil != err {
 		log.Println(err)
 		return

@@ -49,6 +49,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	Test3()
+	return
+
 	Test1()
 
 	Test2()

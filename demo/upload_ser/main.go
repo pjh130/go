@@ -37,6 +37,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 
 			file, header, err := r.FormFile("upload")
 			if nil != err {
+				log.Println("FormFile: ", err)
 				w.Write([]byte(fmt.Sprintf("%s", err)))
 				return
 			} else {
@@ -45,6 +46,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 				v, err := url.QueryUnescape(header.Filename)
 				//出错
 				if nil != err {
+					log.Println("QueryUnescape: ", err)
 					w.Write([]byte(fmt.Sprintf("%s", err)))
 					return
 				} else {
@@ -56,6 +58,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 				fileW, err := os.Create(name)
 				//出错
 				if nil != err {
+					log.Println("Create: ", err)
 					w.Write([]byte(fmt.Sprintf("%s", err)))
 					return
 				}
@@ -64,6 +67,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 
 				_, err = io.Copy(fileW, file)
 				if nil != err {
+					log.Println("Copy: ", err)
 					w.Write([]byte(fmt.Sprintf("%s", err)))
 					return
 				} else {
