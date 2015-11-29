@@ -161,6 +161,7 @@ func (this *redisStorage) Set(key string, v interface{}) error {
 func (this *redisStorage) Del(key string) {
 	conn := this._pool.Get()
 	conn.Do("DEL", key)
+	defer conn.Close()
 }
 
 func (this *redisStorage) SetExpire(key string, v interface{}, seconds int64) error {
