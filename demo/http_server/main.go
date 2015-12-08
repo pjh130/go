@@ -22,8 +22,10 @@ func main() {
 
 /////////////////////////////////////////////////////////////////
 func Server1() {
+	wd, err := os.Getwd()
 	http.HandleFunc("/", SayHello1)
-	err := http.ListenAndServe(":8081", nil)
+	http.Handle("/tmpfiles/", http.StripPrefix("/tmpfiles/", http.FileServer(http.Dir(wd))))
+	err = http.ListenAndServe(":8081", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
