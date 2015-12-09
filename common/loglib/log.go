@@ -51,3 +51,7 @@ func example2() {
 	log.Error("error")
 	log.Critical("critical")
 }
+
+func example3() {
+
+}
