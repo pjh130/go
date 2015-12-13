@@ -7,7 +7,8 @@ import (
 func main() {
 	log.Println("====tcp server====")
 
-	startServer()
+	server := NewServer()
+	server.Start(":60000")
 
 	bExit := make(chan bool)
 
