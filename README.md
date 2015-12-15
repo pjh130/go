@@ -20,7 +20,7 @@ golang
 
 * [分布式文件系统 SeaweedFS](https://github.com/chrislusf/seaweedfs)
 
-* [分布式文件系统 IPFS](https://github.com/ipfs/go-ipfs>
+* [分布式文件系统 IPFS](https://github.com/ipfs/go-ipfs)
 
 * [http的文件服务器 gohttp](https://github.com/codeskyblue/gohttp)
 
