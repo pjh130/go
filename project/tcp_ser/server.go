@@ -24,18 +24,27 @@ func (this *Server) Start(addr string) {
 	}
 	defer l.Close()
 	log.Println("Listening on port", addr)
+
+	var tempDelay time.Duration
 	for {
-		tcpListener := l.(*net.TCPListener)
-		tcpListener.SetDeadline(time.Now().Add(time.Second))
 		conn, err := l.Accept()
 		if err != nil {
 			if ne, ok := err.(net.Error); ok && ne.Temporary() {
+				if tempDelay == 0 {
+					tempDelay = 5 * time.Millisecond
+				} else {
+					tempDelay *= 2
+				}
+				if max := 1 * time.Second; tempDelay > max {
+					tempDelay = max
+				}
+				log.Printf("accept error: %v; retrying in %v", err, tempDelay)
 				continue
 			}
-
 			log.Println(err)
 			return
 		}
+		tempDelay = 0
 
 		client := new(Client)
 		client.conn = conn
