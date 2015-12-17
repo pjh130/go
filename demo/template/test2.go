@@ -9,6 +9,7 @@ type Actor struct {
 	UserName string
 }
 
+//传入结构体要特别注意，里边变量名要大写才能解析出来
 func tpl_merger_structdata() {
 	t := template.New("struct data demo template") //创建一个模板
 	t, _ = t.Parse("hello, {{.UserName}}! \n")     //解析模板文件
@@ -18,13 +19,28 @@ func tpl_merger_structdata() {
 
 func tpl_merger_mapdata() {
 	t := template.New("map data demo template")
-	t, _ = t.Parse("Hello, {{.userName}}!\n")
+	t, _ = t.Parse("Hello, {{.userName1}} and {{.userName2}}\n")
 	actorMap := make(map[string]string)
-	actorMap["userName"] = "jsrush@actorMap"
+	actorMap["userName1"] = "jsrush@actorMap1"
+	actorMap["userName2"] = "jsrush@actorMap2"
+	t.Execute(os.Stdout, actorMap)
+}
+
+func tpl_merger_mapdata2() {
+	t := template.New("map data demo template")
+	t, _ = t.Parse(`
+	{{range .}}
+		map {{.}}
+	{{end}}
+	`)
+	actorMap := make(map[string]string)
+	actorMap["userName3"] = "jsrush@actorMap3"
+	actorMap["userName4"] = "jsrush@actorMap4"
 	t.Execute(os.Stdout, actorMap)
 }
 
 func Test2() {
 	tpl_merger_structdata() // 数据类型为Struct
 	tpl_merger_mapdata()    // 数据类型为Map
+	tpl_merger_mapdata2()   // 数据类型为Map
 }

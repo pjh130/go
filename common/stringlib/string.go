@@ -12,6 +12,12 @@ import (
 	"time"
 )
 
+//判断是否是数字字符串
+func IsNum(a string) bool {
+	reg, _ := regexp.Compile("^\\d+$")
+	return reg.MatchString(a)
+}
+
 //格式化json字串
 func StringsToJson(str string) string {
 	rs := []rune(str)

@@ -90,7 +90,12 @@ func (this *Server) SendMsg(identity string, data []byte) error {
 		return errors.New("identity not exist")
 	}
 
-	client.reply <- data
-
+	//防止写入超时
+	select {
+	case <-time.After(time.Second * 3):
+		log.Printf("[%v] write channel timeout\n", identity)
+		return errors.New("write channel timeout")
+	case client.reply <- data:
+	}
 	return nil
 }

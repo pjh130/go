@@ -1,5 +1,5 @@
 // 打印调试
-package debug
+package debuglib
 
 import (
 	"log"
