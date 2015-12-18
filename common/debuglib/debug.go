@@ -8,6 +8,9 @@ import (
 // 错误调试
 var Debug bool = true
 
+func SetDebug(bSet bool) {
+	Debug = bSet
+}
 func Printf(format string, v ...interface{}) {
 	if !Debug {
 		return

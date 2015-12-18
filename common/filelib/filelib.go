@@ -3,6 +3,7 @@ package filelib
 import (
 	"errors"
 	"path/filepath"
+	"runtime"
 	//"fmt"
 	"io/ioutil"
 	"os"
@@ -131,7 +132,7 @@ func GetSubDirs(dir string) ([]string, error) {
 
 	for _, dir := range dirs {
 		if dir.IsDir() {
-			names = append(names, dir.Name())
+			names = append(names, sanitizedName(dir.Name()))
 		}
 
 	}
@@ -158,7 +159,7 @@ func GetSubDirsAll(dir string) ([]string, error) {
 		if fi.IsDir() { // 目录
 			//过滤当前目录
 			if dir != filename {
-				dirs = append(dirs, filename)
+				dirs = append(dirs, sanitizedName(filename))
 			}
 		}
 		return nil
@@ -193,10 +194,10 @@ func GetSubFiles(dir, suffix string) ([]string, error) {
 
 		if len(suffix) > 0 {
 			if strings.HasSuffix(strings.ToUpper(fi.Name()), suffix) {
-				files = append(files, filename)
+				files = append(files, sanitizedName(filename))
 			}
 		} else {
-			files = append(files, filename)
+			files = append(files, sanitizedName(filename))
 		}
 
 		return nil
@@ -224,11 +225,22 @@ func GetSubFilesAll(dir string) ([]string, error) {
 
 		//过滤当前目录
 		if dir != filename {
-			files = append(files, filename)
+			files = append(files, sanitizedName(filename))
 		}
 
 		return nil
 	})
 
 	return files, err
+}
+
+func sanitizedName(filename string) string {
+	if len(filename) > 1 && filename[1] == ':' &&
+		runtime.GOOS == "windows" {
+		filename = filename[2:]
+	}
+
+	filename = filepath.ToSlash(filename)
+	filename = strings.TrimLeft(filename, "/.")
+	return strings.Replace(filename, "../", "", -1)
 }

@@ -3,6 +3,7 @@ package loglib
 import (
 	"github.com/aiwuTech/fileLogger"
 	"github.com/astaxie/beego/logs"
+	"github.com/cihub/seelog"
 )
 
 /*
@@ -52,6 +53,17 @@ func example2() {
 	log.Critical("critical")
 }
 
-func example3() {
+/*
+Console writer
+File writer
+Buffered writer (Chunk writer)
+Rolling log writer (Logging with rotation)
+SMTP writer
 
+https://github.com/cihub/seelog-examples
+https://github.com/cihub/seelog/wiki/Example-config
+*/
+func example3() {
+	defer seelog.Flush()
+	seelog.Info("Hello from Seelog!")
 }

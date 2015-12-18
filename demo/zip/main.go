@@ -62,7 +62,7 @@ func createZipDir(filename string, dirName string) error {
 		return errors.New(dirName + " is not a dir")
 	}
 
-	files, _ := filelib.WalkDirAll(dirName)
+	files, _ := filelib.GetSubFilesAll(dirName)
 	//fmt.Println(files)
 
 	err = createZip(filename, files)

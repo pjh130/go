@@ -1,6 +1,11 @@
 package main
 
-import ()
+import (
+	"fmt"
+	"github.com/pjh130/go/common/pproflib"
+	"os"
+	"os/signal"
+)
 
 func main() {
 	//在标准设备中输出
@@ -23,6 +28,15 @@ func main() {
 		Test4()
 	}
 
-	bExit := make(chan bool)
-	<-bExit
+	//服务器性能查看
+	go pproflib.StartAdminHttp(":8081")
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, os.Kill)
+	// Block until a signal is received.
+	s := <-c
+	fmt.Println("Got signal:", s)
+
+	//	bExit := make(chan bool)
+	//	<-bExit
 }
