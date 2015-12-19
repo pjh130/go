@@ -6,41 +6,36 @@ import (
 	"testing"
 )
 
-func TestItemsZip(t *testing.T) {
-	lst, err := ItemsZip("test.zip")
-	if nil != err {
-		t.Error(err)
-		return
-	}
-	log.Println("length: ", len(lst))
-}
-
-func TestUnpackZip(t *testing.T) {
-	dir := "./unzip"
-	err := UnpackZip("test.zip", dir)
+func TestAll(t *testing.T) {
+	//打包
+	fileName := "c:\\gozip.zip"
+	err := PackZip(fileName, "c:\\debug\\gozip")
 	if nil != err {
 		t.Error(err)
 		return
 	}
 
-	os.RemoveAll(dir)
+	//显示
+	lst, err := ItemsZip(fileName)
 	if nil != err {
 		t.Error(err)
 		return
 	}
-}
+	for i, v := range lst {
+		log.Println(i, v)
+	}
 
-func TestPackZip(t *testing.T) {
-	fileName := "c:\\test.zip"
-	err := PackZip(fileName, "./")
+	//解压
+	dir := "d:\\gotest\\unzip"
+	err = UnpackZip(fileName, dir)
 	if nil != err {
 		t.Error(err)
 		return
 	}
-	return
+
+	//	return
+	//删除测试文件
 	os.RemoveAll(fileName)
-	if nil != err {
-		t.Error(err)
-		return
-	}
+	os.RemoveAll(dir)
+
 }

@@ -1,6 +1,9 @@
 golang
 =========
 
+###Go 语言包管理
+* [Go 语言包管理](https://gopm.io/)
+
 ###================测试工具================
 * [http性能测试](https://github.com/rakyll/boom)
 

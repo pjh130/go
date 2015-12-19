@@ -46,8 +46,6 @@ func Str2Uinicode(str string) string {
 		}
 	}
 
-	fmt.Println("v: ", v)
-
 	return v
 }
 
@@ -68,7 +66,7 @@ func Uint64ListToString(list []uint64, split string) string {
 	return s
 }
 
-//把数字列表转换成字符
+//把数字字符串列表转换成数字列表
 func Uint64ListFromString(str string, split string) []uint64 {
 	var v []uint64
 
@@ -213,7 +211,7 @@ func (a argInt) Get(i int, args ...int) (r int) {
 	return
 }
 
-// interface to string
+// Convert any type to string
 func ToStr(value interface{}, args ...int) (s string) {
 	switch v := value.(type) {
 	case bool:
@@ -250,4 +248,61 @@ func ToStr(value interface{}, args ...int) (s string) {
 		s = fmt.Sprintf("%v", v)
 	}
 	return s
+}
+
+// HexStr2int converts hex format string to decimal number.
+func HexStr2int(hexStr string) (int, error) {
+	num := 0
+	length := len(hexStr)
+	for i := 0; i < length; i++ {
+		char := hexStr[length-i-1]
+		factor := -1
+
+		switch {
+		case char >= '0' && char <= '9':
+			factor = int(char) - '0'
+		case char >= 'a' && char <= 'f':
+			factor = int(char) - 'a' + 10
+		default:
+			return -1, fmt.Errorf("invalid hex: %s", string(char))
+		}
+
+		num += factor * PowInt(16, i)
+	}
+	return num, nil
+}
+
+// Int2HexStr converts decimal number to hex format string.
+func Int2HexStr(num int) (hex string) {
+	if num == 0 {
+		return "0"
+	}
+
+	for num > 0 {
+		r := num % 16
+
+		c := "?"
+		if r >= 0 && r <= 9 {
+			c = string(r + '0')
+		} else {
+			c = string(r + 'a' - 10)
+		}
+		hex = c + hex
+		num = num / 16
+	}
+	return hex
+}
+
+// PowInt is int type of math.Pow function.
+func PowInt(x int, y int) int {
+	if y <= 0 {
+		return 1
+	} else {
+		if y%2 == 0 {
+			sqrt := PowInt(x, y/2)
+			return sqrt * sqrt
+		} else {
+			return PowInt(x, y-1) * x
+		}
+	}
 }

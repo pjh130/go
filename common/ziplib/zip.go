@@ -5,10 +5,12 @@ import (
 	"errors"
 	"github.com/pjh130/go/common/filelib"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 )
 
 /**********************************************************************
@@ -50,19 +52,25 @@ func ItemsZip(fileName string) ([]string, error) {
  *  20151228           V1.0            panpan            创建
  ************************************************************************/
 func PackZip(fileName string, dirName string) error {
+	//绝对路径
+	abs, err := filepath.Abs(dirName)
+	if nil != err {
+		return err
+	}
+
 	file, err := os.Create(fileName)
 	if nil != err {
 		return err
 	}
 	defer file.Close()
 
-	if is, _ := filelib.IsDir(dirName); !is {
+	if is := filelib.IsDir(abs); !is {
 		return errors.New(dirName + " is not a dir")
 	}
 
-	files, _ := filelib.GetSubFilesAll(dirName)
+	files, _ := filelib.GetSubFilesAll(dirName, true)
 
-	err = CreateZip(fileName, files)
+	err = CreateZip(fileName, files, abs)
 	return err
 }
 
@@ -77,6 +85,8 @@ func PackZip(fileName string, dirName string) error {
  *  20151228           V1.0            panpan            创建
  ************************************************************************/
 func UnpackZip(fileName string, zipDir string) error {
+	v := time.Now().UnixNano()
+	log.Println("Start UnpackZip")
 	reader, err := zip.OpenReader((fileName))
 	if nil != err {
 		return err
@@ -93,7 +103,6 @@ func UnpackZip(fileName string, zipDir string) error {
 	for _, zipFile := range reader.Reader.File {
 		name := sanitizedName(zipFile.Name)
 		name = zipDir + string(filepath.Separator) + name
-		name = sanitizedName(name)
 
 		mode := zipFile.Mode()
 		//如果是目录直接创建
@@ -107,12 +116,23 @@ func UnpackZip(fileName string, zipDir string) error {
 			}
 		} else {
 			err = UnpackZippedFile(name, zipFile)
+			if nil != err {
+				return err
+			}
 		}
 	}
+
+	log.Println("End UnpackZip", time.Now().UnixNano()-v)
 	return nil
 }
 
 func UnpackZippedFile(fileName string, zipFile *zip.File) error {
+	dir := filepath.Dir(fileName)
+
+	err := os.MkdirAll(dir, 0755)
+	if nil != err {
+		return err
+	}
 	writer, err := os.Create(fileName)
 	if nil != err {
 		return err
@@ -144,7 +164,7 @@ func sanitizedName(filename string) string {
 	return strings.Replace(filename, "../", "", -1)
 }
 
-func CreateZip(filename string, files []string) error {
+func CreateZip(filename string, files []string, absPath string) error {
 	file, err := os.Create(filename)
 	if nil != err {
 		return err
@@ -155,7 +175,7 @@ func CreateZip(filename string, files []string) error {
 	defer zipper.Close()
 
 	for _, name := range files {
-		err = writeFileToZip(zipper, name)
+		err = writeFileToZip(zipper, name, absPath)
 		if nil != err {
 			return err
 		}
@@ -164,7 +184,7 @@ func CreateZip(filename string, files []string) error {
 	return err
 }
 
-func writeFileToZip(zipper *zip.Writer, filename string) error {
+func writeFileToZip(zipper *zip.Writer, filename string, absPath string) error {
 	file, err := os.Open(filename)
 	if nil != err {
 		return err
@@ -181,11 +201,18 @@ func writeFileToZip(zipper *zip.Writer, filename string) error {
 		return err
 	}
 
-	header.Name = sanitizedName(filename)
+	header.Name = sanitizedName(strings.Replace(filename, absPath, "", -1))
+
+	//文件夹要加处理，要不解压时候会报错
+	if info.IsDir() {
+		header.Name += "/"
+	}
+
 	writer, err := zipper.CreateHeader(header)
 	if nil != err {
 		return err
 	}
+
 	if info.IsDir() {
 		return nil
 	} else {
