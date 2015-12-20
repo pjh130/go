@@ -26,13 +26,25 @@ func tpl_merger_mapdata() {
 	t.Execute(os.Stdout, actorMap)
 }
 
+//模版解析key和value等数组[]
+//{{range $index, $elem := .xxx}}
+//    {{$index}} - {{$elem}}
+//{{end}}
 func tpl_merger_mapdata2() {
+	//	t := template.New("map data demo template")
+	//	t, _ = t.Parse(`
+	//	{{range .}}
+	//		map {{.}}
+	//	{{end}}
+	//	`)
+
 	t := template.New("map data demo template")
 	t, _ = t.Parse(`
-	{{range .}}
-		map {{.}}
+	{{range $key, $value := .}}
+		 {{$key}} : {{$value}}
 	{{end}}
 	`)
+
 	actorMap := make(map[string]string)
 	actorMap["userName3"] = "jsrush@actorMap3"
 	actorMap["userName4"] = "jsrush@actorMap4"

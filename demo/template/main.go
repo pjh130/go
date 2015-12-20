@@ -14,7 +14,7 @@ func main() {
 	}
 
 	//输出结构体和map
-	if false {
+	if true {
 		Test2()
 	}
 

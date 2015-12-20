@@ -1,8 +1,9 @@
 golang
 =========
 
-###Go 语言包管理
+###Go 
 * [Go 语言包管理](https://gopm.io/)
+* [Search for Go Packages](https://godoc.org/)
 
 ###================测试工具================
 * [http性能测试](https://github.com/rakyll/boom)
