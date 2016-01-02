@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/pjh130/go/common/uuidlib"
+	//	"github.com/pjh130/go/common/uuidlib"
 	"log"
 	"net"
 	"sync"
@@ -49,17 +49,13 @@ func (this *Server) Start(addr string) {
 		}
 		tempDelay = 0
 
-		client := new(Client)
-		client.identity = uuidlib.NewV4().String()
-		client.conn = conn
-		client.addr = conn.RemoteAddr().String()
-		client.reply = make(chan []byte, 100)
+		client := NewClient(conn, 0, 0)
 
 		this.mutex.Lock()
-		this.connPool[client.identity] = client
+		//		this.connPool[client.identity] = client
 		this.mutex.Unlock()
 
-		log.Println("Accept new client:", client.addr)
+		log.Println("Accept new client:", conn.RemoteAddr())
 
 		go client.readLoop()
 		go client.writeLoop()

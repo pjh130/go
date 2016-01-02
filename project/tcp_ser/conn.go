@@ -1,10 +1,14 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"github.com/coocood/freecache"
+	"github.com/pjh130/go/common/uuidlib"
 	"log"
 	"net"
 	"sync"
+	"time"
 )
 
 type DataRecv struct {
@@ -29,61 +33,129 @@ func (this *DataRecv) printData() {
 }
 
 type Client struct {
+	mu       sync.Mutex
 	identity string
 	conn     net.Conn
-	addr     string
-	recv     DataRecv
-	reply    chan []byte
-	cache    *freecache.Cache
+	err      error
+	// Read
+	readTimeout time.Duration
+	br          *bufio.Reader
+
+	// Write
+	writeTimeout time.Duration
+	bw           *bufio.Writer
+
+	recv  DataRecv
+	reply chan []byte
+	cache *freecache.Cache
 }
 
-func (this *Client) readLoop() {
+func NewClient(netConn net.Conn, readTimeout, writeTimeout time.Duration) *Client {
+	c := new(Client)
+	c.identity = uuidlib.NewV4().String()
+	c.conn = netConn
+	c.bw = bufio.NewWriter(netConn)
+	c.br = bufio.NewReader(netConn)
+	c.readTimeout = readTimeout
+	c.writeTimeout = writeTimeout
+	c.reply = make(chan []byte, 100)
+
+	return c
+}
+
+func (c *Client) Close() error {
+	c.mu.Lock()
+	err := c.err
+	if c.err == nil {
+		c.err = errors.New("client: closed")
+		err = c.conn.Close()
+	}
+	c.mu.Unlock()
+	return err
+}
+
+func (c *Client) fatal(err error) error {
+	c.mu.Lock()
+	if c.err == nil {
+		c.err = err
+		// Close connection to force errors on subsequent calls and to unblock
+		// other reader or writer.
+		c.conn.Close()
+	}
+	c.mu.Unlock()
+	return err
+}
+
+func (c *Client) readLine() ([]byte, error) {
+	return c.br.ReadSlice('\n')
+}
+
+func (c *Client) readBytes(v []byte) (int, error) {
+	return c.br.Read(v)
+}
+
+func (c *Client) writeString(s string) (int, error) {
+	return c.bw.WriteString(s)
+}
+
+func (c *Client) writeBytes(p []byte) (int, error) {
+	return c.bw.Write(p)
+}
+
+func (c *Client) Start() {
+	go c.readLoop()
+	go c.writeLoop()
+}
+
+func (c *Client) readLoop() {
 	var v []byte = make([]byte, 1024)
 	for {
-		n, err := this.conn.Read(v)
+		n, err := c.readBytes(v)
+		//		n, err := c.conn.Read(v)
 		//发生错误就清理资源退出循环
 		if nil != err {
-			log.Printf("[%v] read err: %v\n", this.identity, err)
+			log.Printf("[%v] read err: %v\n", c.identity, err)
 			//关闭通道会触发writeLoop的错误，退出writeLoop的循环
-			close(this.reply)
+			close(c.reply)
 			return
 		}
 		if n > 0 {
 			//添加数据
-			this.recv.appendData(v[:n])
+			c.recv.appendData(v[:n])
 
 			//打印数据
-			this.recv.printData()
+			c.recv.printData()
 
 			//处理数据
-			data, err := this.recv.parseData(nil)
+			_, err := c.recv.parseData(nil)
 			if nil == err {
-				this.cache.Set([]byte("key"), data, 0)
+				//				c.cache.Set([]byte("key"), data, 0)
 			}
 
 			//处理返回
 			reply := []byte("OK")
-			this.reply <- reply
+			c.reply <- reply
 		}
 	}
 }
 
-func (this *Client) writeLoop() {
+func (c *Client) writeLoop() {
 	for {
 		select {
-		case reply, ok := <-this.reply:
+		case reply, ok := <-c.reply:
 			if !ok {
-				log.Printf("[%v] reply chan fail\n", this.identity)
+				log.Printf("[%v] reply chan fail\n", c.identity)
 				//readLoop中发生错误会关闭通道触发
-				this.conn.Close()
+				c.Close()
 				return
 			}
 
-			_, err := this.conn.Write(reply)
+			_, err := c.writeBytes(reply)
+			//			_, err := c.conn.Write(reply)
 			if nil != err {
-				log.Printf("[%v] write err: %v\n", this.identity, err)
+				log.Printf("[%v] write err: %v\n", c.identity, err)
 				//关闭链接会触发readLoop关闭通道
-				this.conn.Close()
+				c.Close()
 				return
 			}
 		}
