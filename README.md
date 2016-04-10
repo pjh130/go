@@ -1,4 +1,12 @@
 golang
+
+###go程序变小
+go build -ldflags "-s -w"  (go install类似)
+解释一下参数的意思：
+-ldflags： 表示将后面的参数传给连接器（5/6/8l）
+-s：去掉符号信息（然后panic时候的stack trace就没有任何文件名/行号信息了，这个等价于普通C/C++程序被strip的效果）
+-w：去掉DWARF调试信息。得到的程序就不能用gdb调试了
+
 =========
 ###================开源项目================
 * [谷歌官方维护了一个基于go语言的开源项目列表](https://github.com/golang/go/wiki/Projects)
@@ -45,7 +53,7 @@ golang
 
 
 ###================游戏框架================
-* [游戏服务器框架 gonet](https://github.com/xtaci/gonet/tree/master/src)
+* [游戏服务器框架 gonet](http://gonet2.github.io/)
 
 * [Leaf 游戏服务器框架](https://github.com/name5566/leaf)
 
@@ -67,6 +75,7 @@ golang
 ###================词库================
 * [Go 分词库 GoJieba](https://github.com/yanyiwu/gojieba)
 * [悟空全文搜索引擎](https://github.com/huichen/wukong)
+* [现代化的文本索引库，可以做多种形式的索引及搜索查询,对于文档内容索引应该是非常好用的](https://github.com/blevesearch/bleve)
 
 
 ###================Reader================
@@ -93,6 +102,7 @@ golang
 ###================存储================
 * [Yoke是Postgres的高可用集群，具有自动切换和自动集群恢复](https://github.com/nanopack/yoke)
 * [KiteQ基于go+protobuff实现的多种持久化方案的mq框架](https://github.com/blackbeans/kiteq)
+* [cockroach新型的分布式SQL数据库](https://github.com/cockroachdb/cockroach)
 
 
 ###================RPC================

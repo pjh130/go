@@ -14,6 +14,15 @@ import (
 	"strings"
 )
 
+//获取程序绝对路径
+func GetCurrPath() string {
+	file, _ := exec.LookPath(os.Args[0])
+	path, _ := filepath.Abs(file)
+	index := strings.LastIndex(path, string(os.PathSeparator))
+	ret := path[:index]
+	return ret
+}
+
 /**********************************************************************
  * 功能描述： 判断文件或者是文件夹是否存在
  * 输入参数： path-文件或者文件夹路径

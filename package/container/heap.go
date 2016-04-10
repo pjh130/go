@@ -5,6 +5,14 @@ import (
 	"fmt"
 )
 
+/*
+heap包对任意实现了heap接口的类型提供堆操作。（小根）堆是具有“每个节点都是以其为根的子树中最小
+值”属性的树。树的最小元素在根部，为index 0.
+
+heap是常用的实现优先队列的方法。要创建一个优先队列，实现一个具有使用（负的）优先级作为比较的依
+据的Less方法的Heap接口，如此一来可用Push添加项目而用Pop取出队列最高优先级的项目。
+*/
+
 // An IntHeap is a min-heap of ints.
 type IntHeap []int
 
