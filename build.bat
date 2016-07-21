@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 
 
 :: 获取目录的名字, 用于start  目录名字.exe

@@ -1,0 +1,79 @@
+Golang在windows下交叉编译linux程序
+
+
+1、下载相关程序。
+
+　　Golang下载：http://www.golangtc.com/download
+
+　　Git下载：http://git-scm.com/download/
+
+　　TDM-GCC下载：http://tdm-gcc.tdragon.net/download
+
+2、Go编译环境配置
+
+　　安装 TDM-GCC，程序会自动设置PATH环境变量，如果没有设置成功请手动设置。
+
+　　安装Go，安装完后需要设置GOROOT，GOPATH，GOBIN，PATH环境变量，
+
+　　其中　　
+
+　　GOROOT为你的Go安装跟目录
+
+　　GOPATH为你go程序开发目录，go get后的包也会下载到该目录。
+
+　　GOBIN为你的go运行目录，运行 go install 命令后，程序会被安装到该目录。
+
+　　PATH为你Go程序根目录，用于能够通过控制台调用go命令。
+
+3、配置交叉编译环境
+
+　　在Go根目录下的src目录，新建一个build.bat文件，并复制内容如下：
+
+set CGO_ENABLED=0
+set GOROOT_BOOTSTRAP=C:/Go
+::x86块
+set GOARCH=386
+set GOOS=windows
+call make.bat --no-clean
+  
+set GOOS=linux
+call make.bat --no-clean
+  
+set GOOS=freebsd
+call make.bat --no-clean
+  
+set GOOS=darwin
+call make.bat --no-clean
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  
+::x64块
+set GOARCH=amd64
+set GOOS=linux
+call make.bat --no-clean
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  
+::arm块
+set GOARCH=arm
+set GOOS=linux
+call make.bat --no-clean
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  
+set GOARCH=386
+set GOOS=windows
+go get github.com/nsf/gocode
+pause
+　　我的Go程序版本是1.6，需要设置GOROOT_BOOTSTRAP变量为Go的安装目录，否则执行时会报错。
+
+　　然后运行build.bat，等待结束。
+
+　　该程序会编译其他平台编译Go需要的库和编译文件。
+
+　　完成后，在cmd命令行下依次执行：
+
+　　set GOOS=linux
+
+　　set GOPACH=amd64
+
+　　go build -o -x APPNAME main.go
+
+　　编译后的文件会出现在main.go相应的目录下。
