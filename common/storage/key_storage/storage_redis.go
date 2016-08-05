@@ -1,4 +1,4 @@
-package simple
+package key_storage
 
 import (
 	"bytes"
@@ -19,7 +19,10 @@ type redisStorage struct {
 	sync.Mutex
 }
 
-func NewRedisStorage(redisAddr string, pwd string, poolSide int) Storage {
+func NewRedisStorage(config string) Storage {
+	var redisAddr string
+	var pwd string
+	var poolSide int
 	pool, _ := NewRedisPool(redisAddr, pwd, poolSide)
 	return &redisStorage{
 		_pool: pool,

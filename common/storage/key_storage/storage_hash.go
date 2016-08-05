@@ -1,4 +1,4 @@
-package simple
+package key_storage
 
 import (
 	"errors"
