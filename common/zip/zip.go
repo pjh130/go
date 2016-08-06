@@ -3,7 +3,7 @@ package zip
 import (
 	"archive/zip"
 	"errors"
-	"github.com/pjh130/go/common/filelib"
+	MyFile "github.com/pjh130/go/common/file"
 	"io"
 	"log"
 	"os"
@@ -43,7 +43,7 @@ func ItemsZip(fileName string) ([]string, error) {
 
 /**********************************************************************
  * 功能描述： 打包ZIP文件
- * 输入参数： fileName-压缩包 zipDir-压缩的目录
+ * 输入参数： fileName-压缩包 srcName-压缩的东西
  * 输出参数： 无
  * 返 回 值： error-错误信息
  * 其它说明： 无
@@ -51,9 +51,15 @@ func ItemsZip(fileName string) ([]string, error) {
  * ----------------------------------------------------------------------
  *  20151228           V1.0            panpan            创建
  ************************************************************************/
-func PackZip(fileName string, dirName string) error {
+func PackZip(fileName string, srcName string) error {
+	v := time.Now().UnixNano()
+	//判断要压缩的文件是否存在
+	if false == MyFile.IsExist(srcName) {
+		return 	errors.New(srcName + "  not exist!")
+	}
+	
 	//绝对路径
-	abs, err := filepath.Abs(dirName)
+	abs, err := filepath.Abs(srcName)
 	if nil != err {
 		return err
 	}
@@ -64,13 +70,23 @@ func PackZip(fileName string, dirName string) error {
 	}
 	defer file.Close()
 
-	if is := filelib.IsDir(abs); !is {
-		return errors.New(dirName + " is not a dir")
+	var files []string
+	//如果是目录就遍历全部列表
+	if true == MyFile.IsDir(abs) {
+		files , _ = MyFile.GetSubFilesAll(srcName, true)
+	} else if MyFile.IsFile(abs){
+		//如果是单一的文件，直接添加
+		files = append(files, srcName)
+	}
+	log.Println(files)
+	//没有找到要压缩的东西
+	if len(files) <= 0 {
+		return 	errors.New(srcName + "  is empty!")
 	}
 
-	files, _ := filelib.GetSubFilesAll(dirName, true)
-
 	err = CreateZip(fileName, files, abs)
+	
+	log.Println("Pack zip", time.Now().UnixNano()-v, "nano")
 	return err
 }
 
@@ -86,7 +102,6 @@ func PackZip(fileName string, dirName string) error {
  ************************************************************************/
 func UnpackZip(fileName string, zipDir string) error {
 	v := time.Now().UnixNano()
-	log.Println("Start UnpackZip")
 	reader, err := zip.OpenReader((fileName))
 	if nil != err {
 		return err
@@ -122,7 +137,7 @@ func UnpackZip(fileName string, zipDir string) error {
 		}
 	}
 
-	log.Println("End UnpackZip", time.Now().UnixNano()-v)
+	log.Println("Unpack zip", time.Now().UnixNano()-v, "nano")
 	return nil
 }
 
@@ -200,8 +215,10 @@ func writeFileToZip(zipper *zip.Writer, filename string, absPath string) error {
 	if nil != err {
 		return err
 	}
-
-	header.Name = sanitizedName(strings.Replace(filename, absPath, "", -1))
+	
+	if filename != absPath {
+		header.Name = sanitizedName(strings.Replace(filename, absPath, "", -1))
+	}
 
 	//文件夹要加处理，要不解压时候会报错
 	if info.IsDir() {

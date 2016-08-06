@@ -1,4 +1,4 @@
-package filelib
+package example
 
 import (
 	"log"
@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetSubDirs(t *testing.T) {
-	dirs, err := GetSubDirs("../", false)
+	dirs, err := file.GetSubDirs("../", false)
 	if nil != err {
 		t.Error(err)
 		return
@@ -18,7 +18,7 @@ func TestGetSubDirs(t *testing.T) {
 }
 
 func TestGetSubDirsAll(t *testing.T) {
-	_, err := GetSubDirsAll("../", true)
+	_, err := file.GetSubDirsAll("../", true)
 	if nil != err {
 		t.Error(err)
 		return
@@ -29,7 +29,7 @@ func TestGetSubDirsAll(t *testing.T) {
 func TestGetSubFilesAll(t *testing.T) {
 	path, _ := filepath.Abs("./")
 	log.Println(path)
-	list, err := GetSubFilesAll(path, false)
+	list, err := file.GetSubFilesAll(path, false)
 	if nil != err {
 		t.Error(err)
 		return
@@ -44,7 +44,7 @@ func TestGetSubFilesAll(t *testing.T) {
 func TestCopyDir(t *testing.T) {
 	src := "./"
 	dest := "./new"
-	err := CopyDir(src, dest)
+	err := file.CopyDir(src, dest)
 	if nil != err {
 		t.Error(err)
 		return
@@ -54,4 +54,8 @@ func TestCopyDir(t *testing.T) {
 	if nil != err {
 		log.Println(err)
 	}
+}
+
+func TestGetCurrPath(t *testing.T) {
+	log.Println(file.GetCurrPath())
 }

@@ -1,23 +1,24 @@
-package zip
+package example
 
 import (
 	"log"
 	"os"
 	"testing"
-	"github.com/pjh130/zip"
+	"github.com/pjh130/go/common/zip"
 )
 
 func TestAll(t *testing.T) {
 	//打包
 	fileName := "c:\\gozip.zip"
-	err := PackZip(fileName, "c:\\debug\\gozip")
+	err := zip.PackZip(fileName, "c:\\debug\\gozip_test")
+//	err := zip.PackZip(fileName, "c:\\debug\\1.1")
 	if nil != err {
 		t.Error(err)
 		return
 	}
 
 	//显示
-	lst, err := ItemsZip(fileName)
+	lst, err := zip.ItemsZip(fileName)
 	if nil != err {
 		t.Error(err)
 		return
@@ -28,13 +29,13 @@ func TestAll(t *testing.T) {
 
 	//解压
 	dir := "d:\\gotest\\unzip"
-	err = UnpackZip(fileName, dir)
+	err = zip.UnpackZip(fileName, dir)
 	if nil != err {
 		t.Error(err)
 		return
 	}
 
-	//	return
+		
 	//删除测试文件
 	os.RemoveAll(fileName)
 	os.RemoveAll(dir)
