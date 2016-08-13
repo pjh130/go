@@ -2,13 +2,13 @@ package file
 
 import (
 	"errors"
-	"path"
-	"path/filepath"
-	//"fmt"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -346,7 +346,7 @@ func CopyDir(srcPath, destPath string) error {
 	return nil
 }
 
-// Copy copies file from source to target path.
+//文件夹拷贝
 func CopyFile(src, dest string) error {
 	// Gather file information to set back later.
 	si, err := os.Lstat(src)
@@ -386,4 +386,113 @@ func CopyFile(src, dest string) error {
 		return err
 	}
 	return os.Chmod(dest, si.Mode())
+}
+
+//创建文件夹
+func MkDir(dir string) error {
+	//如果存在不需要创建
+	if IsExist(dir) {
+		return nil
+	}
+
+	return os.MkdirAll(dir, os.ModePerm)
+}
+
+//在指定目录查找文件
+// this is often used in search config file in /etc ~/
+func SearchFile(filename string, paths ...string) (fullPath string, err error) {
+	for _, path := range paths {
+		if fullPath = filepath.Join(path, filename); IsExist(fullPath) {
+			return
+		}
+	}
+	err = fmt.Errorf("%s not found in paths", fullPath)
+	return
+}
+
+//获取文件的最后修改时间
+func FileModifyTime(fp string) (int64, error) {
+	f, e := os.Stat(fp)
+	if e != nil {
+		return 0, e
+	}
+	return f.ModTime().Unix(), nil
+}
+
+//获取文件大小
+func FileSize(fp string) (int64, error) {
+	f, e := os.Stat(fp)
+	if e != nil {
+		return 0, e
+	}
+	return f.Size(), nil
+}
+
+//获取绝对路径
+func RealPath(fp string) (string, error) {
+	if path.IsAbs(fp) {
+		return fp, nil
+	}
+	wd, err := os.Getwd()
+	return path.Join(wd, fp), err
+}
+
+//重命名文件
+func Rename(src string, target string) error {
+	return os.Rename(src, target)
+}
+
+//获取当前路径的文件夹列表
+func DirsUnder(dirPath string) ([]string, error) {
+	if !IsExist(dirPath) {
+		return []string{}, nil
+	}
+
+	fs, err := ioutil.ReadDir(dirPath)
+	if err != nil {
+		return []string{}, err
+	}
+
+	sz := len(fs)
+	if sz == 0 {
+		return []string{}, nil
+	}
+
+	ret := make([]string, 0, sz)
+	for i := 0; i < sz; i++ {
+		if fs[i].IsDir() {
+			name := fs[i].Name()
+			if name != "." && name != ".." {
+				ret = append(ret, name)
+			}
+		}
+	}
+
+	return ret, nil
+}
+
+//获取当前路径的文件列表
+func FilesUnder(dirPath string) ([]string, error) {
+	if !IsExist(dirPath) {
+		return []string{}, nil
+	}
+
+	fs, err := ioutil.ReadDir(dirPath)
+	if err != nil {
+		return []string{}, err
+	}
+
+	sz := len(fs)
+	if sz == 0 {
+		return []string{}, nil
+	}
+
+	ret := make([]string, 0, sz)
+	for i := 0; i < sz; i++ {
+		if !fs[i].IsDir() {
+			ret = append(ret, fs[i].Name())
+		}
+	}
+
+	return ret, nil
 }

@@ -1,7 +1,7 @@
 package crypto
 
 import (
-	"bytes"
+//	"bytes"
 	"crypto/md5"
 	"crypto/rand"
 	"crypto/sha1"
@@ -70,7 +70,8 @@ func GetFileSha256(filePath string) (string, error) {
 func String2Md5(origData string) string {
 	h := md5.New()
 
-	h.Write(bytes.NewBufferString(origData).Bytes())
+//	h.Write(bytes.NewBufferString(origData).Bytes())
+	io.WriteString(h, origData)
 
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
 }
@@ -79,7 +80,8 @@ func String2Md5(origData string) string {
 func String2Sha1(origData string) string {
 	h := sha1.New()
 
-	h.Write(bytes.NewBufferString(origData).Bytes())
+//	h.Write(bytes.NewBufferString(origData).Bytes())
+	io.WriteString(h, origData)
 
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
 }
@@ -88,7 +90,8 @@ func String2Sha1(origData string) string {
 func String2Sha256(origData string) string {
 	h := sha256.New()
 
-	h.Write(bytes.NewBufferString(origData).Bytes())
+//	h.Write(bytes.NewBufferString(origData).Bytes())
+	io.WriteString(h, origData)
 
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
 }

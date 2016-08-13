@@ -1,9 +1,11 @@
 package log
 
 import (
+	"github.com/Sirupsen/logrus"
 	"github.com/aiwuTech/fileLogger"
 	"github.com/astaxie/beego/logs"
 	"github.com/cihub/seelog"
+	"github.com/golang/glog"
 )
 
 /*
@@ -66,4 +68,22 @@ https://github.com/cihub/seelog/wiki/Example-config
 func example3() {
 	defer seelog.Flush()
 	seelog.Info("Hello from Seelog!")
+}
+
+func example4() {
+	logrus.WithFields(logrus.Fields{
+		"animal": "walrus",
+	}).Info("A walrus appears")
+}
+
+/*
+Leveled execution logs for Go.
+
+This is an efficient pure Go implementation of leveled logs in the
+manner of the open source C++ package
+*/
+func example5() {
+	glog.Info("Prepare to repel boarders")
+
+	glog.Fatalf("Initialization failed: %s", err)
 }

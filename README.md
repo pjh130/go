@@ -69,6 +69,8 @@ golang
 
 * [爬虫框架 go_spider](https://github.com/hu17889/go_spider)
 
+* [基于docker的分布式爬虫服务](https://github.com/huichen/zerg)
+
 
 ###================任务系统================
 * [轻量级异步定时任务系统 kingtask](https://github.com/kingsoft-wps/kingtask)
@@ -91,6 +93,7 @@ golang
 * [go 的简单网络框架 kendynet-go](https://github.com/sniperHW/kendynet-go)
 * [Teleport是一款适用于分布式系统的高并发API框架](https://github.com/henrylee2cn/teleport)
 * [qTunnel使用的安全套接字隧道](https://github.com/getqujing/qtunnel)
+* [Fast HTTP implementation for Go](https://github.com/valyala/fasthttp)
 
 
 ###================json================
@@ -98,7 +101,7 @@ golang
 * [Jason is an easy-to-use JSON library for Go](https://github.com/antonholmquist/jason)
 * [gojson attempts to generate go struct definitions from json documents](https://github.com/ChimeraCoder/gojson)
 * [Go-Json-Rest](https://github.com/ant0ine/go-json-rest)
-
+* [easyjson](https://github.com/mailru/easyjson)
 
 ###================算法库================
 * [大量算法库](https://github.com/henrylee2cn/algorithm)
