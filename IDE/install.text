@@ -1,0 +1,8 @@
+一、sublime3
+	1、下载https://www.sublimetext.com/3
+	2、Preferences > Browse Packages打开文件夹，打开cmd
+	3、git clone https://github.com/DisposaBoy/GoSublime
+	
+二、LiteIDE
+	1、https://github.com/visualfc/liteide
+	2、Binary downloads http://sourceforge.net/projects/liteide/files
