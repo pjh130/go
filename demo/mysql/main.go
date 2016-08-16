@@ -3,23 +3,30 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	"io/ioutil"
+	"os"
 	"reflect"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	dsn := "buybuychat:powerbuybuychatcom@tcp(121.201.11.123:13366)/buybuychat_bms?charset=utf8"
+	dsn := "root:123456@tcp(localhost:3306)/test?charset=utf8"
 	db, err := OpenDb(dsn)
 	if nil != err {
 		fmt.Println(err)
 	} else {
 		fmt.Println("open ok")
 
+		err := DeleteTable(db, "session")
+		fmt.Println("Delete result:", err)
+		err = CreateTable(db, "create_table.sql")
+		fmt.Println("Create result:", err)
 		//		InsertData(db)
-
 		//		ReadData(db)
-
-		ReadDatas(db)
+		if false {
+			ReadDatas(db)
+		}
 	}
 }
 
@@ -62,6 +69,29 @@ func InsertData(db *sql.DB) error {
 			fmt.Println("LastInsertId: ", id)
 		}
 	}
+	return err
+}
+
+func DeleteTable(db *sql.DB, name string) error {
+	s := "DROP TABLE " + name
+	_, err := db.Exec(s)
+
+	return err
+}
+
+func CreateTable(db *sql.DB, sqlFile string) error {
+	f, err := os.Open(sqlFile)
+	if nil != err {
+		return err
+	}
+	defer f.Close()
+
+	fd, err := ioutil.ReadAll(f)
+	if nil != err {
+		return err
+	}
+	fmt.Println(string(fd))
+	_, err = db.Exec(string(fd))
 	return err
 }
 
