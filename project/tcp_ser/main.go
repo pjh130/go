@@ -2,6 +2,9 @@ package main
 
 import (
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -10,7 +13,12 @@ func main() {
 	server := NewServer()
 	server.Start(":60000")
 
-	bExit := make(chan bool)
+	ch := make(chan os.Signal, 1)
 
-	<-bExit
+	//	signal.Notify(ch, os.Interrupt, os.Kill)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL, syscall.SIGQUIT)
+	c := <-ch
+	log.Println(c)
+	//	bExit := make(chan bool)
+	//	<-bExit
 }

@@ -9,13 +9,13 @@ import (
 	"errors"
 	"io"
 	"math"
+
+	"github.com/pjh130/go/common/net/tcpnetwork/utils"
 )
-
-
 
 //数据长度类型
 const (
-	MSG_LEN_UINT8 = 1
+	MSG_LEN_UINT8  = 1
 	MSG_LEN_UINT16 = 2
 	MSG_LEN_UINT32 = 4
 )
@@ -32,10 +32,10 @@ type MsgParser struct {
 
 func NewMsgParser() *MsgParser {
 	p := new(MsgParser)
-	p.lenMsgLen = LenMsgLen
-	p.minMsgLen = MinMsgLen
-	p.maxMsgLen = MaxMsgLen
-	p.littleEndian = LittleEndian
+	p.lenMsgLen = utils.Cfg.LenMsgLen
+	p.minMsgLen = utils.Cfg.MinMsgLen
+	p.maxMsgLen = utils.Cfg.MaxMsgLen
+	p.littleEndian = utils.Cfg.LittleEndian
 
 	return p
 }

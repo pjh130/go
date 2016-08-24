@@ -3,12 +3,13 @@ package main
 import (
 	"bufio"
 	"errors"
-	"github.com/coocood/freecache"
-	"github.com/pjh130/go/common/uuidlib"
 	"log"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/coocood/freecache"
+	"github.com/pjh130/go/common/uuid"
 )
 
 type DataRecv struct {
@@ -48,11 +49,14 @@ type Client struct {
 	recv  DataRecv
 	reply chan []byte
 	cache *freecache.Cache
+
+	In  MessageIn  //输入消息
+	Out MessageOut //输出消息
 }
 
 func NewClient(netConn net.Conn, readTimeout, writeTimeout time.Duration) *Client {
 	c := new(Client)
-	c.identity = uuidlib.NewV4().String()
+	c.identity = uuid.NewV4().String()
 	c.conn = netConn
 	c.bw = bufio.NewWriter(netConn)
 	c.br = bufio.NewReader(netConn)
@@ -102,7 +106,7 @@ func (c *Client) writeBytes(p []byte) (int, error) {
 	return c.bw.Write(p)
 }
 
-func (c *Client) Start() {
+func (c *Client) StartWork() {
 	go c.readLoop()
 	go c.writeLoop()
 }

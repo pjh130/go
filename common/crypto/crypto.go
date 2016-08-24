@@ -1,7 +1,7 @@
 package crypto
 
 import (
-//	"bytes"
+	//	"bytes"
 	"crypto/md5"
 	"crypto/rand"
 	"crypto/sha1"
@@ -11,22 +11,17 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 )
 
 //计算文件的md5值
 func GetFileMd5(filePath string) (string, error) {
-	var v string
-	fi, err := os.Open(filePath)
+	fd, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		return v, err
+		return "", err
 	}
-	defer fi.Close()
-	fd, _ := ioutil.ReadAll(fi)
 
 	h := md5.New()
-
 	h.Write(fd)
 
 	return hex.EncodeToString(h.Sum(nil)), err // 输出加密结果
@@ -34,16 +29,12 @@ func GetFileMd5(filePath string) (string, error) {
 
 //计算文件的sha1值
 func GetFileSha1(filePath string) (string, error) {
-	var v string
-	fi, err := os.Open(filePath)
+	fd, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		return v, err
+		return "", err
 	}
-	defer fi.Close()
-	fd, _ := ioutil.ReadAll(fi)
 
 	h := sha1.New()
-
 	h.Write(fd)
 
 	return hex.EncodeToString(h.Sum(nil)), err // 输出加密结果
@@ -51,16 +42,12 @@ func GetFileSha1(filePath string) (string, error) {
 
 //计算文件的sha256值
 func GetFileSha256(filePath string) (string, error) {
-	var v string
-	fi, err := os.Open(filePath)
+	fd, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		return v, err
+		return "", err
 	}
-	defer fi.Close()
-	fd, _ := ioutil.ReadAll(fi)
 
 	h := sha256.New()
-
 	h.Write(fd)
 
 	return hex.EncodeToString(h.Sum(nil)), err // 输出加密结果
@@ -70,7 +57,7 @@ func GetFileSha256(filePath string) (string, error) {
 func String2Md5(origData string) string {
 	h := md5.New()
 
-//	h.Write(bytes.NewBufferString(origData).Bytes())
+	//	h.Write(bytes.NewBufferString(origData).Bytes())
 	io.WriteString(h, origData)
 
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
@@ -80,7 +67,7 @@ func String2Md5(origData string) string {
 func String2Sha1(origData string) string {
 	h := sha1.New()
 
-//	h.Write(bytes.NewBufferString(origData).Bytes())
+	//	h.Write(bytes.NewBufferString(origData).Bytes())
 	io.WriteString(h, origData)
 
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
@@ -90,7 +77,7 @@ func String2Sha1(origData string) string {
 func String2Sha256(origData string) string {
 	h := sha256.New()
 
-//	h.Write(bytes.NewBufferString(origData).Bytes())
+	//	h.Write(bytes.NewBufferString(origData).Bytes())
 	io.WriteString(h, origData)
 
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果

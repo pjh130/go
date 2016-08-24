@@ -57,8 +57,10 @@ func (this *Server) Start(addr string) {
 
 		log.Println("Accept new client:", conn.RemoteAddr())
 
-		go client.readLoop()
-		go client.writeLoop()
+		//监控跨连接的数据发送(中转)
+		//		go func
+
+		client.StartWork()
 	}
 }
 

@@ -9,16 +9,25 @@ import (
 	"io/ioutil"
 	"os"
 	//	"strings"
-	"github.com/pjh130/go/common/filelib"
+	"strconv"
+
+	Myfile "github.com/pjh130/go/common/file"
 )
 
 func main() {
+	var Tokens []string
+	Tokens = append(Tokens, "SELECT", "SELECT")
+	Tokens = append(Tokens, "LIMIT", strconv.Itoa(123))
+	Tokens = append(Tokens, "ASC")
+	fmt.Println(Tokens)
+	return
+
 	fmt.Println("Hello world!")
 	fmt.Println("os.PathSeparator:", string(os.PathSeparator))
 	v := "E:\\qq_chat"
 	//	files, err := filelib.WalkDirAll(v)
 	//	files, err := filelib.WalkDirFiles(v, "")
-	files, err := filelib.WalkSubDirs(v)
+	files, err := Myfile.GetSubFiles(v, "", true)
 	if nil == err {
 
 		//		for i := 0; i < len(files); i++ {

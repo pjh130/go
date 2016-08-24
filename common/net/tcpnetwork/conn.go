@@ -8,32 +8,42 @@ import (
 	"log"
 	"net"
 	"sync"
+
+	"github.com/pjh130/go/common/uuid"
 )
 
 //定义一个链接的基本接口
 type Conn interface {
 	ReadMsg() ([]byte, error)
 	WriteMsg(args ...[]byte) error
+	WriteMsgOther(key string, args ...[]byte)
 	LocalAddr() net.Addr
 	RemoteAddr() net.Addr
 	Close()
 	Destroy()
 }
 
-type ConnSet map[net.Conn]struct{}
+type WriteToOtherConn struct {
+	Key  string
+	Data []byte
+}
 
 type TCPConn struct {
+	Key string
 	sync.Mutex
 	conn      net.Conn
 	writeChan chan []byte
 	closeFlag bool
+	Other     chan WriteToOtherConn
 	msgParser *MsgParser
 }
 
 func newTCPConn(conn net.Conn, pendingWriteNum int, msgParser *MsgParser) *TCPConn {
 	tcpConn := new(TCPConn)
+	tcpConn.Key = uuid.NewV4().String()
 	tcpConn.conn = conn
 	tcpConn.writeChan = make(chan []byte, pendingWriteNum)
+	tcpConn.Other = make(chan WriteToOtherConn)
 	tcpConn.msgParser = msgParser
 
 	go func() {
@@ -61,6 +71,7 @@ func (tcpConn *TCPConn) doDestroy() {
 	tcpConn.conn.(*net.TCPConn).SetLinger(0)
 	tcpConn.conn.Close()
 	close(tcpConn.writeChan)
+	close(tcpConn.Other)
 	tcpConn.closeFlag = true
 }
 
@@ -124,4 +135,14 @@ func (tcpConn *TCPConn) ReadMsg() ([]byte, error) {
 
 func (tcpConn *TCPConn) WriteMsg(args ...[]byte) error {
 	return tcpConn.msgParser.Write(tcpConn, args...)
+}
+
+func (tcpConn *TCPConn) WriteMsgOther(key string, args ...[]byte) {
+	for _, data := range args {
+		other := WriteToOtherConn{
+			Key:  key,
+			Data: data,
+		}
+		tcpConn.Other <- other
+	}
 }

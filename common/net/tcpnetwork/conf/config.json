@@ -1,0 +1,10 @@
+{
+	"max_msg_len": 4096,
+	"min_msg_len": 1,
+	"time_out": 30,
+	"len_msg_len": 2,
+	"little_endian": false,
+	"max_conn_num": 1024,
+	"pending_write_num": 1024,
+	"server_addr": "127.0.0.1:60000"
+}
