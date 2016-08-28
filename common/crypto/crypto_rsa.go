@@ -6,6 +6,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
+	"os"
 )
 
 /*
@@ -15,9 +16,9 @@ RSA公开密钥密码体制。所谓的公开密钥密码体制就是使用不�
 加密算法E和解密算法D也都是公开的。虽然解密密钥SK是由公开密钥PK决定的，但却不能根据PK计算出SK。
 */
 
-// 加密
-func RsaEncrypt(origData []byte) ([]byte, error) {
-	block, _ := pem.Decode(publicKey)
+// 加密 //publicKey
+func RsaEncrypt(origData []byte, key []byte) ([]byte, error) {
+	block, _ := pem.Decode(key)
 	if block == nil {
 		return nil, errors.New("public key error")
 	}
@@ -29,9 +30,9 @@ func RsaEncrypt(origData []byte) ([]byte, error) {
 	return rsa.EncryptPKCS1v15(rand.Reader, pub, origData)
 }
 
-// 解密
-func RsaDecrypt(ciphertext []byte) ([]byte, error) {
-	block, _ := pem.Decode(privateKey)
+// 解密 //privateKey
+func RsaDecrypt(ciphertext []byte, key []byte) ([]byte, error) {
+	block, _ := pem.Decode(key)
 	if block == nil {
 		return nil, errors.New("private key error!")
 	}
@@ -40,6 +41,48 @@ func RsaDecrypt(ciphertext []byte) ([]byte, error) {
 		return nil, err
 	}
 	return rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)
+}
+
+//RSA公钥私钥产生(private.pem, public.pem)
+func GenRsaKey(bits int, privatePem, publicPem string) error {
+	// 生成私钥文件
+	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
+	if err != nil {
+		return err
+	}
+	derStream := x509.MarshalPKCS1PrivateKey(privateKey)
+	block := &pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: derStream,
+	}
+	file, err := os.Create(privatePem)
+	if err != nil {
+		return err
+	}
+	err = pem.Encode(file, block)
+	if err != nil {
+		return err
+	}
+
+	// 生成公钥文件
+	publicKey := &privateKey.PublicKey
+	derPkix, err := x509.MarshalPKIXPublicKey(publicKey)
+	if err != nil {
+		return err
+	}
+	block = &pem.Block{
+		Type:  "PUBLIC KEY",
+		Bytes: derPkix,
+	}
+	file, err = os.Create(publicPem)
+	if err != nil {
+		return err
+	}
+	err = pem.Encode(file, block)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // 公钥和私钥可以从文件中读取
