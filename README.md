@@ -14,45 +14,37 @@ golang
 =========
 ###================开源项目================
 * [Golang筛选过的优秀开源项目汇总](https://github.com/hackstoic/golang-open-source-projects)
-
 * [谷歌官方维护了一个基于go语言的开源项目列表](https://github.com/golang/go/wiki/Projects)
-
 * [Awesome Go收集了 Go 语言的流行库，框架和软件](https://github.com/avelino/awesome-go)
-
 * [OPEN经验库](http://www.open-open.com/lib/view/open1396063913278.html#Configuration_File_Parsers)
-
 * [开源社区](http://www.oschina.net/project/lang/358/go)
-
 
 ###Go 
 * [Go 语言包管理](https://gopm.io/)
 * [Search for Go Packages](https://godoc.org/)
 
+###================基础类库================
+* [开源的基础类库](https://github.com/dropbox/godropbox)
+
 ###================测试工具================
 * [http性能测试](https://github.com/rakyll/boom)
 
-
 ###================文件系统================
 * [分布式文件系统 SeaweedFS](https://github.com/chrislusf/seaweedfs)
-
 * [Syncthing: 一个在计算机之间同步文件/文件夹的私密安全同步工具](https://github.com/syncthing/syncthing)
-
 * [分布式文件系统 SeaweedFS](https://github.com/chrislusf/seaweedfs)
-
 * [分布式文件系统 IPFS](https://github.com/ipfs/go-ipfs)
-
 * [http的文件服务器 gohttp](https://github.com/codeskyblue/gohttp)
-
+* [gocryptfs 是一个使用 Go 开发的，加密的覆盖文件系统](https://github.com/rfjakob/gocryptfs)
+* [bfs 是使用 Go 编写的分布式文件系统（小文件存储）](https://github.com/Terry-Mao/bfs)
 
 ###================WEB================
 * [Go静态网站生成器Hugo] (https://github.com/spf13/hugo)
-
+* [Negroni 是一个很地道的 web 中间件](https://github.com/urfave/negroni)
 
 ###===============消息推送================
 * [gopush-cluster是一套golang开发的实时消息推送集群](https://github.com/Terry-Mao/gopush-cluster)
-
 * [开源消息系统 NSQ](https://github.com/nsqio/nsq)
-
 
 ###================文件监控================
 * [File system notifications for Go](https://github.com/howeyc/fsnotify)
@@ -60,25 +52,17 @@ golang
 
 ###================游戏框架================
 * [游戏服务器框架 gonet](http://gonet2.github.io/)
-
 * [Leaf 游戏服务器框架](https://github.com/name5566/leaf)
-
 
 ###================爬虫================
 * [Go 爬虫软件 Pholcus](https://github.com/henrylee2cn/pholcus)
-
 * [分布式爬虫 ants](https://github.com/wcong/ants-go)
-
 * [爬虫框架 go_spider](https://github.com/hu17889/go_spider)
-
 * [基于docker的分布式爬虫服务](https://github.com/huichen/zerg)
-
 
 ###================任务系统================
 * [轻量级异步定时任务系统 kingtask](https://github.com/kingsoft-wps/kingtask)
-
 * [Go 异步任务队列 Go Machinery](https://github.com/RichardKnop/machinery)
-
 
 ###================词库================
 * [Go 分词库 GoJieba](https://github.com/yanyiwu/gojieba)
@@ -86,17 +70,14 @@ golang
 * [现代化的文本索引库，可以做多种形式的索引及搜索查询,对于文档内容索引应该是非常好用的](https://github.com/blevesearch/bleve)
 * [Go中文分词](https://github.com/huichen/sego)
 
-
 ###================Reader================
 * [开源的 Google Reader 替代品 GoRead](https://github.com/mjibson/goread)
-
 
 ###================网络库================
 * [go 的简单网络框架 kendynet-go](https://github.com/sniperHW/kendynet-go)
 * [Teleport是一款适用于分布式系统的高并发API框架](https://github.com/henrylee2cn/teleport)
 * [qTunnel使用的安全套接字隧道](https://github.com/getqujing/qtunnel)
 * [Fast HTTP implementation for Go](https://github.com/valyala/fasthttp)
-
 
 ###================json================
 * [ffjson: faster JSON for Go](https://github.com/pquerna/ffjson)
@@ -108,20 +89,36 @@ golang
 ###================算法库================
 * [大量算法库](https://github.com/henrylee2cn/algorithm)
 
-
 ###================存储================
 * [Yoke是Postgres的高可用集群，具有自动切换和自动集群恢复](https://github.com/nanopack/yoke)
 * [KiteQ基于go+protobuff实现的多种持久化方案的mq框架](https://github.com/blackbeans/kiteq)
 * [cockroach新型的分布式SQL数据库](https://github.com/cockroachdb/cockroach)
 
-
 ###================RPC================
 * [RobustIRC 是不会有网络中断情况的 IRC](https://github.com/robustirc/robustirc)
-
 
 ###================监控服务================
 * [pingd 是世界上最简单的监控服务](https://github.com/pinggg/pingd)
 
-
 ###================图形框架================
 * [GoQt是一个Go语言的GUI工具包](https://github.com/visualfc/goqt)
+
+###================excel================
+* [Excelize ](https://github.com/Luxurioust/excelize)
+* [Go (golang) library for reading and writing XLSX files](https://github.com/tealeg/xlsx)
+
+###================IM框架================
+* [分布式可伸缩 IM 服务器 FishChat](https://github.com/oikomi/FishChatServer)
+* [Go 开发的 IM 和推送服务 goim](https://github.com/Terry-Mao/goim)
+* [Mattermost 采用 Go 语言开发，这是一个开源的团队通讯服务](https://github.com/mattermost/platform)
+* [GoBelieve IM云平台服务端](https://github.com/GoBelieveIO/im_service)
+
+###================电商系统================
+* [基于Go语言开发的开源电商系统](https://github.com/qor/qor)
+* [Go2o是Google Go语言结合领域驱动设计DDD的开源O2O实现](https://github.com/jsix/go2o)
+
+###================图像处理================
+* [Gift 包提供一整套有用的图像处理过滤器](https://github.com/disintegration/gift)
+
+###================蓝牙================
+* [Gatt 是一个 Go 语言包，用来构建低功耗蓝牙外设](https://github.com/paypal/gatt)
