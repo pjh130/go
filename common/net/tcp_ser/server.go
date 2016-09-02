@@ -24,14 +24,21 @@ type Server struct {
 	ToDo       ToDoFunc     //消息处理函数
 }
 
-func StartServer(config Config, parser Parser, toDo ToDoFunc) {
+func StartServer(path string, parser Parser, toDo ToDoFunc) {
 	if nil == parser {
-		panic("Parser 数据包的解析接口必须实现")
+		panic("[ Parser ] 数据包的解析接口必须实现")
 		return
 	}
 
 	if nil == toDo {
-		panic("ToDoFunc 处理接收到消息的业务逻辑接口必须实现")
+		panic("[ ToDoFunc ] 处理接收到消息的业务逻辑接口必须实现")
+		return
+	}
+
+	config, err := ReadConfig(path)
+	if nil != err {
+		str := fmt.Sprintf("加载配置文件[%s]出错: %s", path, err)
+		panic(str)
 		return
 	}
 

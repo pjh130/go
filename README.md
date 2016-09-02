@@ -64,11 +64,12 @@ golang
 * [轻量级异步定时任务系统 kingtask](https://github.com/kingsoft-wps/kingtask)
 * [Go 异步任务队列 Go Machinery](https://github.com/RichardKnop/machinery)
 
-###================词库================
+###================词库、搜索引擎================
 * [Go 分词库 GoJieba](https://github.com/yanyiwu/gojieba)
+* [Go中文分词](https://github.com/huichen/sego)
 * [悟空全文搜索引擎](https://github.com/huichen/wukong)
 * [现代化的文本索引库，可以做多种形式的索引及搜索查询,对于文档内容索引应该是非常好用的](https://github.com/blevesearch/bleve)
-* [Go中文分词](https://github.com/huichen/sego)
+* [GoLucene 是 Java 的 Lucene 搜索引擎的 Go 语言移植版本](https://github.com/balzaczyy/golucene)
 
 ###================Reader================
 * [开源的 Google Reader 替代品 GoRead](https://github.com/mjibson/goread)
@@ -122,3 +123,7 @@ golang
 
 ###================蓝牙================
 * [Gatt 是一个 Go 语言包，用来构建低功耗蓝牙外设](https://github.com/paypal/gatt)
+
+###================验证码服务================
+* [Golang 实现的验证码服务](https://github.com/jianxinio/captcha)
+* [go语言验证码服务器](https://github.com/hanguofeng/gocaptcha)

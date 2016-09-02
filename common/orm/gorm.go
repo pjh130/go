@@ -2,14 +2,24 @@ package orm
 
 import (
 	"database/sql"
+	"time"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
-	"time"
 )
 
-//https://github.com/jinzhu/gorm
+/*
+	项目地址: https://github.com/jinzhu/gorm
+	项目文档: http://jinzhu.me/gorm/
+*/
+
+// import _ "github.com/jinzhu/gorm/dialects/mysql"
+// import _ "github.com/jinzhu/gorm/dialects/postgres"
+// import _ "github.com/jinzhu/gorm/dialects/sqlite"
+// import _ "github.com/jinzhu/gorm/dialects/mssql"
+
 func ExampleGorm() {
 	db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 	// db, err := gorm.Open("foundation", "dbname=gorm") // FoundationDB.
