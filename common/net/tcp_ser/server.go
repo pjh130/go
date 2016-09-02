@@ -20,10 +20,21 @@ type Server struct {
 	Clients    ClientTable  // 客户端列表 抽象出来单独维护和入参 更方便管理连接
 	Quit       chan *Client // 连接退出嗅探器 触发连接退出处理方法
 	Lock       sync.Mutex   //互斥
-	Par        Parser
+	Par        Parser       //必须实现的消息解析数据流的接口
+	ToDo       ToDoFunc     //消息处理函数
 }
 
-func StartServer(config Config, parser Parser) {
+func StartServer(config Config, parser Parser, toDo ToDoFunc) {
+	if nil == parser {
+		panic("Parser 数据包的解析接口必须实现")
+		return
+	}
+
+	if nil == toDo {
+		panic("ToDoFunc 处理接收到消息的业务逻辑接口必须实现")
+		return
+	}
+
 	log.Println("服务端启动中...")
 	//初始化服务端
 	server := &Server{
@@ -31,6 +42,7 @@ func StartServer(config Config, parser Parser) {
 		MaxClient:  config.MaxClients,
 		CurrClient: 0,
 		Par:        parser,
+		ToDo:       toDo,
 	}
 
 	// 设置监听地址及端口
@@ -106,11 +118,14 @@ func (this *Server) NewClient(conn net.Conn) {
 			//处理接受到的消息.......................................
 			case req := <-client.In:
 				log.Println(string(req.Data))
-				out := MsgResponse{
-					Key:  client.Key,
-					Data: []byte("OK"),
+				//				out := MsgResponse{
+				//					Key:  client.Key,
+				//					Data: []byte("OK"),
+				//				}
+				outs := this.ToDo(req)
+				for _, out := range outs {
+					client.PutOut(out)
 				}
-				client.PutOut(out)
 			//客户端退出
 			case quit := <-client.Quit:
 				//调用客户端关闭方法

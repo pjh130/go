@@ -20,6 +20,9 @@ type MsgResponse struct {
 	Data []byte //内容
 }
 
+//业务处理逻辑函数接口
+type ToDoFunc func(MsgResquest) []MsgResponse
+
 //消息解析接口
 type Parser interface {
 	Decode(conn net.Conn) ([]byte, error)

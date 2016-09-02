@@ -8,6 +8,33 @@ import (
 	"net"
 )
 
+//业务处理函数样例
+func MyDo(req MsgResquest) []MsgResponse {
+	var res []MsgResponse
+	r := MsgResponse{
+		Key:  req.Key,
+		Data: []byte("OK"),
+	}
+	res = append(res, r)
+
+	return res
+}
+
+//////////////////解析数据包的接口实现样例1//////////////////
+type MyParser struct {
+}
+
+func (this *MyParser) Decode(conn net.Conn) ([]byte, error) {
+	buf := make([]byte, 4096)
+	_, err := conn.Read(buf)
+	return buf, err
+}
+
+func (this *MyParser) Encode(data []byte) ([]byte, error) {
+	return data, nil
+}
+
+//////////////////解析数据包的接口实现样例2//////////////////
 //数据长度类型
 const (
 	MSG_LEN_UINT8  = 1
