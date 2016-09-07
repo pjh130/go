@@ -85,5 +85,5 @@ manner of the open source C++ package
 func example5() {
 	glog.Info("Prepare to repel boarders")
 
-	glog.Fatalf("Initialization failed: %s", err)
+	//	glog.Fatalf("Initialization failed: %s", err)
 }

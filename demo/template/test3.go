@@ -6,6 +6,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/astaxie/beego"
+
 	"fmt"
 )
 
@@ -24,6 +26,7 @@ func Test3() {
 	template.Must(t2.Parse(string(bytes)))             //将字符串读作模板
 	t2.Execute(os.Stdout, map[string]interface{}{"UserName": "你好世界"})
 	fmt.Println("注入函数测试============== end ==============\n")
+	beego.AddFuncMap("tihuan", tihuan)
 
 	fmt.Println("读取文件模版测试==============begin==============")
 	data1 := map[string]interface{}{"UserName": "data1"}

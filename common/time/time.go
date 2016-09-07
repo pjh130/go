@@ -80,6 +80,11 @@ func Calc(f func()) int64 {
 }
 
 //计算时间差给出提示
+func HumanDurationInt(now, before int) string {
+	return HumanDurationInt64(int64(now), int64(before))
+}
+
+//计算时间差给出提示
 func HumanDurationInt64(now, before int64) string {
 	d := now - before
 	if d <= 60 {
@@ -106,10 +111,29 @@ func HumanDurationInt64(now, before int64) string {
 		return "1 day ago"
 	}
 
-	return fmt.Sprintf("%d days ago", d/3600/24)
-}
+	if d <= 3600*24*7 {
+		return fmt.Sprintf("%d dates ago", d/(3600*24))
+	}
 
-//计算时间差给出提示
-func HumanDurationInt(now, before int) string {
-	return HumanDurationInt64(int64(now), int64(before))
+	if d <= 3600*24*7*2 {
+		return "1 week ago"
+	}
+
+	if d <= 3600*24*30 {
+		return fmt.Sprintf("%d weeks ago", d/(3600*24*7))
+	}
+
+	if d <= 3600*24*30*2 {
+		return "1 month ago"
+	}
+
+	if d <= 3600*24*365 {
+		return fmt.Sprintf("%d months ago", d/(3600*24*30))
+	}
+
+	if d <= 3600*24*365*2 {
+		return fmt.Sprintf("1 year ago")
+	}
+
+	return fmt.Sprintf("%d years ago", d/(3600*24*365))
 }

@@ -1,15 +1,11 @@
 package string
 
 import (
-	"bytes"
-	"encoding/binary"
 	"errors"
 	"fmt"
-	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 )
 
 //判断是否是数字字符串
@@ -82,41 +78,6 @@ func Uint64ListFromString(str string, split string) []uint64 {
 	return v
 }
 
-//解析int参数
-func ParseUrlInt64(values url.Values, key string, base int, bitSize int) (int64, error) {
-	temp := values.Get(key)
-	return strconv.ParseInt(temp, base, bitSize)
-}
-
-//解析int参数
-func ParseUrlInt(values url.Values, key string) (int, error) {
-	temp := values.Get(key)
-	return strconv.Atoi(temp)
-}
-
-//解析uint64参数
-func ParseUrlUint64(values url.Values, key string, base int, bitSize int) (uint64, error) {
-	temp := values.Get(key)
-	return strconv.ParseUint(temp, base, bitSize)
-}
-
-//解析float64参数
-func ParseUrlFloat64(values url.Values, key string, bitSize int) (float64, error) {
-	temp := values.Get(key)
-	return strconv.ParseFloat(temp, bitSize)
-}
-
-//解析Bool参数
-func ParseUrlBool(values url.Values, key string) (bool, error) {
-	temp := values.Get(key)
-	return strconv.ParseBool(temp)
-}
-
-//获取时间字串
-func GetNowTimeString() string {
-	return time.Now().Format("2006-01-02 15:04:05")
-}
-
 //检查用户名是否正确
 func IsUsernameValid(name string) error {
 	var err error
@@ -158,44 +119,6 @@ func IsUsernameValid(name string) error {
 		}
 	}
 	return err
-}
-
-//整形转换成字节
-func IntToBytesBig(n int) []byte {
-	x := int32(n)
-
-	bytesBuffer := bytes.NewBuffer([]byte{})
-	binary.Write(bytesBuffer, binary.BigEndian, x)
-	return bytesBuffer.Bytes()
-}
-
-//字节转换成整形
-func BytesToIntBig(b []byte) int {
-	bytesBuffer := bytes.NewBuffer(b)
-
-	var x int32
-	binary.Read(bytesBuffer, binary.BigEndian, &x)
-
-	return int(x)
-}
-
-//整形转换成字节
-func IntToBytesLittle(n int) []byte {
-	x := int32(n)
-
-	bytesBuffer := bytes.NewBuffer([]byte{})
-	binary.Write(bytesBuffer, binary.LittleEndian, x)
-	return bytesBuffer.Bytes()
-}
-
-//字节转换成整形
-func BytesToIntLittle(b []byte) int {
-	bytesBuffer := bytes.NewBuffer(b)
-
-	var x int32
-	binary.Read(bytesBuffer, binary.LittleEndian, &x)
-
-	return int(x)
 }
 
 type argInt []int
@@ -251,7 +174,7 @@ func ToStr(value interface{}, args ...int) (s string) {
 }
 
 // HexStr2int converts hex format string to decimal number.
-func HexStr2int(hexStr string) (int, error) {
+func HexStr2Int(hexStr string) (int, error) {
 	num := 0
 	length := len(hexStr)
 	for i := 0; i < length; i++ {

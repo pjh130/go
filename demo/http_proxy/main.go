@@ -9,6 +9,8 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/elazarl/goproxy"
 )
 
 func main() {
@@ -19,6 +21,12 @@ func main() {
 
 	//client
 	go ProxyClient()
+
+	go func() {
+		proxy := goproxy.NewProxyHttpServer()
+		proxy.Verbose = true
+		log.Fatal(http.ListenAndServe(":8888", proxy))
+	}()
 
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)

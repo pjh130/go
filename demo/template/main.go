@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/pjh130/go/common/pproflib"
 	"os"
 	"os/signal"
+
+	"github.com/pjh130/go/common/debug/pprof"
 )
 
 func main() {
@@ -29,7 +30,7 @@ func main() {
 	}
 
 	//服务器性能查看
-	go pproflib.StartAdminHttp(":8081")
+	go pprof.StartAdminHttp(":8081")
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill)

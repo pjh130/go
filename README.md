@@ -49,7 +49,6 @@ golang
 ###================文件监控================
 * [File system notifications for Go](https://github.com/howeyc/fsnotify)
 
-
 ###================游戏框架================
 * [游戏服务器框架 gonet](http://gonet2.github.io/)
 * [Leaf 游戏服务器框架](https://github.com/name5566/leaf)
@@ -127,3 +126,10 @@ golang
 ###================验证码服务================
 * [Golang 实现的验证码服务](https://github.com/jianxinio/captcha)
 * [go语言验证码服务器](https://github.com/hanguofeng/gocaptcha)
+
+###================网络代理================
+* [goproxy库编写的http代理服务器+图片cache保存脚本](https://github.com/elazarl/goproxy)
+
+###================分布式系统================
+* [Consul是HashiCorp公司推出的开源工具，用于实现分布式系统的服务发现与配置](https://github.com/hashicorp/consul)
+* [etcd是一个高可用的键值存储系统，主要用于共享配置和服务发现](https://github.com/coreos/etcd)

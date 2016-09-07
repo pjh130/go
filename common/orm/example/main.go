@@ -1,7 +1,7 @@
 package main
 
 import (
-	"database/sql"
+	//	"database/sql"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -12,7 +12,11 @@ type User struct {
 	gorm.Model
 	Email    string
 	Password string
-	Name     sql.NullString
+	Name     string
+}
+
+func (User) TableName() string {
+	return "user"
 }
 
 func main() {
@@ -26,7 +30,12 @@ func main() {
 	if false == db.HasTable(&User{}) {
 		log.Println("`User`'s table not exists")
 		db.AutoMigrate(&User{})
+		//		db.Create(&User{})
 	}
+
+	user := User{Email: "abc@163.com", Password: "abc123", Name: "pp"}
+	//	db.NewRecord(user)
+	db.Create(&user)
 
 	defer db.Close()
 }

@@ -154,11 +154,13 @@ func GetSubDirs(dir string, absPath bool) ([]string, error) {
 	}
 
 	for _, v := range dirs {
-		if v.IsDir() {
-			if absPath {
-				names = append(names, abs+v.Name())
-			} else {
-				names = append(names, v.Name())
+		if v.Name() != "." && v.Name() != ".." {
+			if v.IsDir() {
+				if absPath {
+					names = append(names, abs+v.Name())
+				} else {
+					names = append(names, v.Name())
+				}
 			}
 		}
 	}
@@ -191,7 +193,7 @@ func GetSubDirsAll(dir string, absPath bool) ([]string, error) {
 		//}
 		if fi.IsDir() { // 目录
 			//过滤当前目录
-			if abs != filename {
+			if filename != "." && filename != ".." {
 				if absPath {
 					dirs = append(dirs, filename)
 				} else {
@@ -236,19 +238,22 @@ func GetSubFiles(dir, suffix string, absPath bool) ([]string, error) {
 			return nil
 		}
 
-		if len(suffix) > 0 {
-			if strings.HasSuffix(strings.ToUpper(fi.Name()), suffix) {
+		//判断是否合法
+		if filename != "." && filename != ".." {
+			if len(suffix) > 0 {
+				if strings.HasSuffix(strings.ToUpper(fi.Name()), suffix) {
+					if absPath {
+						files = append(files, filename)
+					} else {
+						files = append(files, strings.Replace(filename, abs, "", -1))
+					}
+				}
+			} else {
 				if absPath {
 					files = append(files, filename)
 				} else {
 					files = append(files, strings.Replace(filename, abs, "", -1))
 				}
-			}
-		} else {
-			if absPath {
-				files = append(files, filename)
-			} else {
-				files = append(files, strings.Replace(filename, abs, "", -1))
 			}
 		}
 
@@ -283,7 +288,7 @@ func GetSubFilesAll(dir string, absPath bool) ([]string, error) {
 		}
 
 		//过滤当前目录
-		if abs != filename {
+		if filename != "." && filename != ".." {
 			if true == absPath {
 				files = append(files, filename)
 			} else {
@@ -495,4 +500,44 @@ func FilesUnder(dirPath string) ([]string, error) {
 	}
 
 	return ret, nil
+}
+
+// get filepath base name
+func Basename(file string) string {
+	return path.Base(file)
+}
+
+//显示文件大小的字串
+func DisplayFileSize(f string) string {
+	info, err := os.Stat(f)
+	if err != nil {
+		return ""
+	}
+
+	return DisplaySize(info.Size())
+}
+
+//显示文件大小的字串
+func DisplaySize(size int64) string {
+	if size < 1024 {
+		return fmt.Sprintf("%dB", size)
+	}
+
+	if size < 1024*1024 {
+		return fmt.Sprintf("%dK", size/1024)
+	}
+
+	if size < 1024*1024*1024 {
+		return fmt.Sprintf("%dM", size/(1024*1024))
+	}
+
+	if size < 1024*1024*1024*1024 {
+		return fmt.Sprintf("%dG", size/(1024*1024*1024))
+	}
+
+	if size < 1024*1024*1024*1024*1024 {
+		return fmt.Sprintf("%dT", size/(1024*1024*1024*1024))
+	}
+
+	return "TooLarge"
 }

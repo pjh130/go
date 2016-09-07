@@ -6,3 +6,9 @@
 二、LiteIDE
 	1、https://github.com/visualfc/liteide
 	2、Binary downloads http://sourceforge.net/projects/liteide/files
+	
+三、VS code golang 开发环境搭建
+	https://github.com/microsoft/vscode-go
+	1、下载地址: https://code.visualstudio.com
+	2、官方安装: https://marketplace.visualstudio.com/items?itemName=lukehoban.Go
+	3、中文安装: http://blog.csdn.net/hil2000/article/details/51714607

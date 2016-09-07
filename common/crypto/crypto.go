@@ -1,7 +1,6 @@
 package crypto
 
 import (
-	//	"bytes"
 	"crypto/md5"
 	"crypto/rand"
 	"crypto/sha1"
