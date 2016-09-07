@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/pjh130/go/common/databaselib"
-	_ "github.com/pjh130/go/common/databaselib/sqlite"
+
+	"github.com/pjh130/go/common/storage/database"
+	_ "github.com/pjh130/go/common/storage/database/sqlite"
 )
 
 func main() {

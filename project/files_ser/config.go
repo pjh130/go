@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/pjh130/go/common/filelib"
 	"log"
 	"os"
+
+	filelib "github.com/pjh130/go/common/file"
 )
 
 const (

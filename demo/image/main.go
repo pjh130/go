@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/pjh130/go/common/imagelib"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"os"
 	"strings"
+
+	"github.com/pjh130/go/common/image"
 )
 
 func main() {
@@ -15,8 +16,8 @@ func main() {
 	fmt.Println("--->", GetImageSuffix("./1.gif"))
 	fmt.Println("--->", GetImageSuffix("./1.png"))
 
-	imagelib.Png2jpg("./1.png", "./png2jpg.jpg")
-	imagelib.Jpg2png("./1.jpg", "./jpg2png.png")
+	image.Png2jpg("./1.png", "./png2jpg.jpg")
+	image.Jpg2png("./1.jpg", "./jpg2png.png")
 }
 
 //返回图片后缀

@@ -12,7 +12,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/pjh130/go/common/filelib"
+	filelib "github.com/pjh130/go/common/file"
 )
 
 func main() {
@@ -58,7 +58,7 @@ func createZipDir(filename string, dirName string) error {
 	}
 	defer file.Close()
 
-	if is, _ := filelib.IsDir(dirName); !is {
+	if is := filelib.IsDir(dirName); !is {
 		return errors.New(dirName + " is not a dir")
 	}
 
