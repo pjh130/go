@@ -46,31 +46,31 @@ var (
  ************************************************************************/
 func RandNum(length int) string {
 
-	return string(RandomCreateBytes(length, numOnly))
+	return string(RandomCreateBytes(length, numOnly...))
 }
 
 //获取指定长度的随机数字和字母串
 func RandAlpha(length int) string {
 
-	return string(RandomCreateBytes(length, numAlpha))
+	return string(RandomCreateBytes(length, numAlpha...))
 }
 
 //获取指定长度的随机字母串
 func RandLetter(length int) string {
 
-	return string(RandomCreateBytes(length, numLetter))
+	return string(RandomCreateBytes(length, numLetter...))
 }
 
 //获取指定长度的随机大写字母串
 func RandUpper(length int) string {
 
-	return string(RandomCreateBytes(length, numUpper))
+	return string(RandomCreateBytes(length, numUpper...))
 }
 
 //获取指定长度的随机小写字母串
 func RandLower(length int) string {
 
-	return string(RandomCreateBytes(length, numLower))
+	return string(RandomCreateBytes(length, numLower...))
 }
 
 /**********************************************************************
@@ -83,7 +83,7 @@ func RandLower(length int) string {
  * ----------------------------------------------------------------------
  *  20151129           V1.0            panpan            创建
  ************************************************************************/
-func RandomCreateBytes(length int, alphabets []byte) []byte {
+func RandomCreateBytes(length int, alphabets ...byte) []byte {
 	if length <= 0 {
 		return []byte("")
 	}

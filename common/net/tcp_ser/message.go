@@ -21,7 +21,7 @@ type MsgResponse struct {
 }
 
 //业务处理逻辑函数接口
-type ToDoFunc func(MsgResquest) []MsgResponse
+type ToDoFunc func(*Server, MsgResquest)
 
 //消息解析接口
 type Parser interface {

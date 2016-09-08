@@ -5,6 +5,11 @@ import (
 	"reflect"
 )
 
+type TT struct {
+	A int
+	B string
+}
+
 //简单类型反射
 func Example1() {
 	var x float64 = 3.4
@@ -12,11 +17,6 @@ func Example1() {
 	fmt.Println("type :", v.Type())
 	fmt.Println("kind is float64:", v.Kind() == reflect.Float64)
 	fmt.Println("value:", v.Float())
-}
-
-type TT struct {
-	A int
-	B string
 }
 
 //复杂类型反射
@@ -29,6 +29,11 @@ func Example2() {
 		fmt.Printf("%d: %s %s = %v\n", i,
 			typeOfT.Field(i).Name, f.Type(), f.Interface())
 	}
+	//改变结构体的值
+	s.Field(0).SetInt(203333333333)
+	s.Field(1).SetString("mh203333333333")
+
+	fmt.Println(t)
 }
 
 //通过反射获得的变量的可设置属性

@@ -14,14 +14,14 @@ import (
 服务端结构体
 */
 type Server struct {
-	Listener   net.Listener // 服务端监听器 监听xx端口
-	MaxClient  int          //最大连接数
-	CurrClient int          //当前连接数
-	Clients    ClientTable  // 客户端列表 抽象出来单独维护和入参 更方便管理连接
-	Quit       chan *Client // 连接退出嗅探器 触发连接退出处理方法
-	Lock       sync.Mutex   //互斥
-	Par        Parser       //必须实现的消息解析数据流的接口
-	ToDo       ToDoFunc     //消息处理函数
+	listener   net.Listener // 服务端监听器 监听xx端口
+	maxClient  int          //最大连接数
+	currClient int          //当前连接数
+	clients    ClientTable  // 客户端列表 抽象出来单独维护和入参 更方便管理连接
+	quit       chan *Client // 连接退出嗅探器 触发连接退出处理方法
+	lock       sync.Mutex   //互斥
+	parser     Parser       //必须实现的消息解析数据流的接口
+	toDo       ToDoFunc     //消息处理函数
 }
 
 func StartServer(path string, parser Parser, toDo ToDoFunc) {
@@ -45,18 +45,18 @@ func StartServer(path string, parser Parser, toDo ToDoFunc) {
 	log.Println("服务端启动中...")
 	//初始化服务端
 	server := &Server{
-		Clients:    make(ClientTable),
-		MaxClient:  config.MaxClients,
-		CurrClient: 0,
-		Par:        parser,
-		ToDo:       toDo,
+		clients:    make(ClientTable),
+		maxClient:  config.MaxClients,
+		currClient: 0,
+		parser:     parser,
+		toDo:       toDo,
 	}
 
 	// 设置监听地址及端口
 	addr := fmt.Sprintf("0.0.0.0:%d", config.Port)
 	listener, err := net.Listen("tcp", addr)
 	if nil == err {
-		server.Listener = listener
+		server.listener = listener
 		log.Printf("开始监听服务器端口[%d]\n", config.Port)
 	} else {
 		log.Printf("监听[%d]端口失败:%s\n", config.Port, err)
@@ -92,17 +92,24 @@ func StartServer(path string, parser Parser, toDo ToDoFunc) {
 	}
 }
 
+func (this *Server) GetClient(key string) *Client {
+	this.lock.Lock()
+	defer this.lock.Unlock()
+
+	return this.clients[key]
+}
+
 func (this *Server) NewClient(conn net.Conn) {
 	//获取UUID作为客户端的key
 	key := uuid.NewV4().String()
 
 	//创建一个客户端
-	client := CreateClient(key, conn, this.Par)
+	client := CreateClient(key, conn, this.parser)
 
-	log.Printf("新客户端[%s][%s]，当前连接数[%d]最大连接数[%d]", client.Key, conn.RemoteAddr(), this.CurrClient, this.MaxClient)
+	log.Printf("新客户端[%s][%s]，当前连接数[%d]最大连接数[%d]", client.Key, conn.RemoteAddr(), this.currClient, this.maxClient)
 
 	//判断服务的最大客户端数量是否溢出
-	if this.MaxClient != -1 && this.CurrClient >= this.MaxClient {
+	if this.maxClient != -1 && this.currClient >= this.maxClient {
 		res := MsgResponse{
 			Key:  client.Key,
 			Data: []byte("More than max connection!"),
@@ -113,10 +120,10 @@ func (this *Server) NewClient(conn net.Conn) {
 	}
 
 	//保存客户端
-	this.Lock.Lock()
-	this.Clients[key] = client
-	this.CurrClient++
-	this.Lock.Unlock()
+	this.lock.Lock()
+	this.clients[key] = client
+	this.currClient++
+	this.lock.Unlock()
 
 	//开启协程不断地处理和客户端的事件交互(处理业务逻辑)
 	go func() {
@@ -125,23 +132,16 @@ func (this *Server) NewClient(conn net.Conn) {
 			//处理接受到的消息.......................................
 			case req := <-client.In:
 				log.Println(string(req.Data))
-				//				out := MsgResponse{
-				//					Key:  client.Key,
-				//					Data: []byte("OK"),
-				//				}
-				outs := this.ToDo(req)
-				for _, out := range outs {
-					client.PutOut(out)
-				}
+				this.toDo(this, req)
 			//客户端退出
 			case quit := <-client.Quit:
 				//调用客户端关闭方法
 				quit.Close()
 				log.Printf("客户端[%s]退出\n", quit.Key)
-				this.Lock.Lock()
-				delete(this.Clients, quit.Key)
-				this.CurrClient--
-				this.Lock.Unlock()
+				this.lock.Lock()
+				delete(this.clients, quit.Key)
+				this.currClient--
+				this.lock.Unlock()
 			}
 
 		}
@@ -156,10 +156,10 @@ func (this *Server) Working() {
 		for {
 			select {
 			// 退出了一个连接
-			case client := <-this.Quit:
+			case client := <-this.quit:
 				// 调用客户端关闭方法
 				client.Close()
-				delete(this.Clients, client.Key)
+				delete(this.clients, client.Key)
 			}
 		}
 	}()

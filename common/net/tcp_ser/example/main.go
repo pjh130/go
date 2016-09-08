@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	my := new(tcp_ser.MyParser)
+	myParser := new(tcp_ser.MyParser)
 
-	tcp_ser.StartServer("./conf/config.ini", my, tcp_ser.MyDo)
+	tcp_ser.StartServer("./conf/config.ini", myParser, tcp_ser.MyDo)
 }

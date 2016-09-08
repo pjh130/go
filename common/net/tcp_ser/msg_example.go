@@ -9,7 +9,7 @@ import (
 )
 
 //业务处理函数样例
-func MyDo(req MsgResquest) []MsgResponse {
+func MyDo(ser *Server, req MsgResquest) {
 	var res []MsgResponse
 	r := MsgResponse{
 		Key:  req.Key,
@@ -17,7 +17,12 @@ func MyDo(req MsgResquest) []MsgResponse {
 	}
 	res = append(res, r)
 
-	return res
+	for _, out := range res {
+		cli := ser.GetClient(out.Key)
+		if cli != nil {
+			cli.PutOut(out)
+		}
+	}
 }
 
 //////////////////解析数据包的接口实现样例1//////////////////
