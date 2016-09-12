@@ -7,7 +7,7 @@ import (
 /*
 读消息
 */
-type MsgResquest struct {
+type MsgRequest struct {
 	Key  string //连接唯一标识符
 	Data []byte //内容
 }
@@ -21,7 +21,7 @@ type MsgResponse struct {
 }
 
 //业务处理逻辑函数接口
-type ToDoFunc func(*Server, MsgResquest)
+type ToDoFunc func(*Server, MsgRequest)
 
 //消息解析接口
 type Parser interface {

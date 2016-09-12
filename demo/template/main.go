@@ -9,14 +9,10 @@ import (
 )
 
 func main() {
-	//在标准设备中输出
-	if false {
-		Test1()
-	}
-
 	//输出结构体和map
 	if true {
 		Test2()
+		return
 	}
 
 	//html回调go中的函数

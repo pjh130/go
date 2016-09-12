@@ -1,6 +1,7 @@
 package tcp_ser
 
 import (
+	"errors"
 	"log"
 	"net"
 )
@@ -9,17 +10,23 @@ const (
 	MSG_LEN = 10
 )
 
+const (
+	ConnStatus_Connected = iota
+	ConnStatus_Disconnected
+)
+
 /*
  客户端结构体
 */
 type Client struct {
 	// 连接信息
-	Key  string           //客户端连接的唯标志
-	Conn net.Conn         //连接
-	In   chan MsgResquest //输入消息
-	Out  chan MsgResponse //输出消息
-	Quit chan *Client     //退出
-	Par  Parser           //需要自己实现的消息解析
+	key    string //客户端连接的唯标志
+	status int
+	conn   net.Conn         //连接
+	In     chan MsgRequest  //输入消息
+	Out    chan MsgResponse //输出消息
+	Quit   chan *Client     //退出
+	parser Parser           //需要自己实现的消息解析
 }
 
 /*
@@ -32,12 +39,13 @@ type ClientTable map[string]*Client
 */
 func CreateClient(key string, conn net.Conn, parser Parser) *Client {
 	client := &Client{
-		Key:  key,
-		Conn: conn,
-		In:   make(chan MsgResquest, MSG_LEN),
-		Out:  make(chan MsgResponse, MSG_LEN),
-		Quit: make(chan *Client),
-		Par:  parser,
+		key:    key,
+		conn:   conn,
+		status: ConnStatus_Connected,
+		In:     make(chan MsgRequest, MSG_LEN),
+		Out:    make(chan MsgResponse, MSG_LEN),
+		Quit:   make(chan *Client),
+		parser: parser,
 	}
 
 	//开始工作
@@ -51,7 +59,7 @@ func CreateClient(key string, conn net.Conn, parser Parser) *Client {
 */
 func (this *Client) Listen() {
 
-	if nil == this.Par {
+	if nil == this.parser {
 		log.Println("Parser 不能为空")
 		this.Close()
 		return
@@ -74,8 +82,12 @@ func (this *Client) Close() {
 	//	close(this.In)
 	//	close(this.Out)
 	//	close(this.Quit)
+	if this.status != ConnStatus_Connected {
+		return
+	}
 
-	this.Conn.Close()
+	this.status = ConnStatus_Disconnected
+	this.conn.Close()
 }
 
 /*
@@ -83,11 +95,16 @@ func (this *Client) Close() {
 */
 func (this *Client) read() {
 	for {
-		data, err := this.Par.Decode(this.Conn)
+		//链接不可用
+		if this.status != ConnStatus_Connected {
+			return
+		}
+
+		data, err := this.parser.Decode(this.conn)
 		if err == nil {
 			//解析出来消息放入缓存中
-			req := MsgResquest{
-				Key:  this.Key,
+			req := MsgRequest{
+				Key:  this.key,
 				Data: data,
 			}
 			this.In <- req
@@ -103,12 +120,17 @@ func (this *Client) read() {
 */
 func (this *Client) write() {
 	for resp := range this.Out {
-		send, err := this.Par.Encode(resp.Data)
+		//链接不可用
+		if this.status != ConnStatus_Connected {
+			return
+		}
+
+		send, err := this.parser.Encode(resp.Data)
 		if nil != err {
 			log.Printf("封装发送的消息失败[%s]", err)
 			return
 		}
-		_, err = this.Conn.Write(send)
+		_, err = this.conn.Write(send)
 		if nil != err {
 			//发生错误
 			log.Printf("Write error: %s\n", err)
@@ -119,10 +141,42 @@ func (this *Client) write() {
 }
 
 /*
+获取输出消息
+*/
+func (this *Client) GetIn() MsgRequest {
+	req := <-this.In
+	return req
+}
+
+/*
  设置输出消息
 */
-func (this *Client) PutOut(resp MsgResponse) {
-	if resp.Key == this.Key {
+func (this *Client) PutOut(resp MsgResponse) error {
+	if this.status != ConnStatus_Connected {
+		return errors.New("Connection is closed.")
+	}
+
+	if resp.Key == this.key {
 		this.Out <- resp
 	}
+
+	return nil
+}
+
+/*
+获取key
+*/
+func (this *Client) GetKey() string {
+	return this.key
+}
+
+/*
+设置Key
+*/
+func (this *Client) SetKey(key string) {
+	this.key = key
+}
+
+func (this *Client) GetStatus() int {
+	return this.status
 }

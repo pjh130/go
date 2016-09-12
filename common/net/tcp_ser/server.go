@@ -106,12 +106,12 @@ func (this *Server) NewClient(conn net.Conn) {
 	//创建一个客户端
 	client := CreateClient(key, conn, this.parser)
 
-	log.Printf("新客户端[%s][%s]，当前连接数[%d]最大连接数[%d]", client.Key, conn.RemoteAddr(), this.currClient, this.maxClient)
+	log.Printf("新客户端[%s][%s]，当前连接数[%d]最大连接数[%d]", client.GetKey(), conn.RemoteAddr(), this.currClient, this.maxClient)
 
 	//判断服务的最大客户端数量是否溢出
 	if this.maxClient != -1 && this.currClient >= this.maxClient {
 		res := MsgResponse{
-			Key:  client.Key,
+			Key:  client.GetKey(),
 			Data: []byte("More than max connection!"),
 		}
 		client.PutOut(res)
@@ -137,9 +137,9 @@ func (this *Server) NewClient(conn net.Conn) {
 			case quit := <-client.Quit:
 				//调用客户端关闭方法
 				quit.Close()
-				log.Printf("客户端[%s]退出\n", quit.Key)
+				log.Printf("客户端[%s]退出\n", quit.GetKey())
 				this.lock.Lock()
-				delete(this.clients, quit.Key)
+				delete(this.clients, quit.GetKey())
 				this.currClient--
 				this.lock.Unlock()
 			}
@@ -159,7 +159,7 @@ func (this *Server) Working() {
 			case client := <-this.quit:
 				// 调用客户端关闭方法
 				client.Close()
-				delete(this.clients, client.Key)
+				delete(this.clients, client.GetKey())
 			}
 		}
 	}()

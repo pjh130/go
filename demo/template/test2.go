@@ -9,6 +9,7 @@ type Actor struct {
 	UserName string
 }
 
+//结构体传值
 //传入结构体要特别注意，里边变量名要大写才能解析出来
 func tpl_merger_structdata() {
 	t := template.New("struct data demo template") //创建一个模板
@@ -17,6 +18,7 @@ func tpl_merger_structdata() {
 	t.Execute(os.Stdout, actor)                    //执行模板的merger操作，并输出到控制台
 }
 
+//输出map数据
 func tpl_merger_mapdata() {
 	t := template.New("map data demo template")
 	t, _ = t.Parse("Hello, {{.userName1}} and {{.userName2}}\n")

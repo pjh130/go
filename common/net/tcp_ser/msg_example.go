@@ -9,7 +9,7 @@ import (
 )
 
 //业务处理函数样例
-func MyDo(ser *Server, req MsgResquest) {
+func MyDo(ser *Server, req MsgRequest) {
 	var res []MsgResponse
 	r := MsgResponse{
 		Key:  req.Key,

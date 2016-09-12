@@ -13,6 +13,7 @@ golang
 
 =========
 ###================开源项目================
+* [Golang优秀开源项目汇总](https://github.com/hackstoic/golang-open-source-projects/blob/master/golang-open-source-projects.md)
 * [Golang筛选过的优秀开源项目汇总](https://github.com/hackstoic/golang-open-source-projects)
 * [谷歌官方维护了一个基于go语言的开源项目列表](https://github.com/golang/go/wiki/Projects)
 * [Awesome Go收集了 Go 语言的流行库，框架和软件](https://github.com/avelino/awesome-go)
