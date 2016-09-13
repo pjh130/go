@@ -1,4 +1,4 @@
-package databaselib
+package odbc
 
 /*
 使用说明必须添加
@@ -8,9 +8,10 @@ _ "github.com/pjh130/go/common/storage/database/odbc"
 
 import (
 	"database/sql"
+	"log"
+
 	"github.com/pjh130/go/common/storage/database"
 	_ "github.com/weigj/go-odbc"
-	"log"
 )
 
 type OdbcProvider struct {

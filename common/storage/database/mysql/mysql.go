@@ -1,4 +1,4 @@
-package databaselib
+package mysql
 
 /*
 使用说明必须添加
@@ -8,9 +8,10 @@ _ "github.com/pjh130/go/common/storage/database/mysql"
 
 import (
 	"database/sql"
+	"log"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/pjh130/go/common/storage/database"
-	"log"
 )
 
 type MysqlProvider struct {

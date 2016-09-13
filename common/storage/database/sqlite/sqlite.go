@@ -1,4 +1,4 @@
-package databaselib
+package sqlite
 
 /*
 使用说明必须添加
@@ -25,9 +25,10 @@ Supported Types
 import (
 	"database/sql"
 	"fmt"
+	"log"
+
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pjh130/go/common/storage/database"
-	"log"
 )
 
 type SQLiteProvider struct {

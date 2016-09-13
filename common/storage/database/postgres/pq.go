@@ -1,4 +1,4 @@
-package databaselib
+package postgres
 
 /*
 使用说明必须添加
@@ -8,9 +8,10 @@ _ "github.com/pjh130/go/common/storage/database/postgres"
 
 import (
 	"database/sql"
+	"log"
+
 	_ "github.com/lib/pq"
 	"github.com/pjh130/go/common/storage/database"
-	"log"
 )
 
 type PqProvider struct {
