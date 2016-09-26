@@ -86,6 +86,7 @@ golang
 * [gojson attempts to generate go struct definitions from json documents](https://github.com/ChimeraCoder/gojson)
 * [Go-Json-Rest](https://github.com/ant0ine/go-json-rest)
 * [easyjson](https://github.com/mailru/easyjson)
+* [go-simplejson](https://github.com/bitly/go-simplejson)
 
 ###================算法库================
 * [大量算法库](https://github.com/henrylee2cn/algorithm)

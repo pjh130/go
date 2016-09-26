@@ -3,9 +3,15 @@ package str
 import (
 	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
+	"gopkg.in/iconv.v1"
 )
 
 //判断是否是数字字符串
@@ -27,6 +33,55 @@ func StringsToJson(str string) string {
 		}
 	}
 	return jsons
+}
+
+// Use golang.org/x/text/encoding. Get page body and change it to utf-8
+func ChangeCharsetEncoding(charset string, sor io.ReadCloser) string {
+	ischange := true
+	var tr transform.Transformer
+	cs := strings.ToLower(charset)
+	if cs == "gbk" {
+		tr = simplifiedchinese.GBK.NewDecoder()
+	} else if cs == "gb18030" {
+		tr = simplifiedchinese.GB18030.NewDecoder()
+	} else if cs == "hzgb2312" || cs == "gb2312" || cs == "hz-gb2312" {
+		tr = simplifiedchinese.HZGB2312.NewDecoder()
+	} else {
+		ischange = false
+	}
+
+	var destReader io.Reader
+	if ischange {
+		transReader := transform.NewReader(sor, tr)
+		destReader = transReader
+	} else {
+		destReader = sor
+	}
+
+	var sorbody []byte
+	var err error
+	if sorbody, err = ioutil.ReadAll(destReader); err != nil {
+		return ""
+	}
+	bodystr := string(sorbody)
+
+	return bodystr
+}
+
+//转换字符编码
+func ChangeCodeType(src string, srcType, destType string) (string, error) {
+	dest := ""
+
+	//	cd, err := iconv.Open("gbk", "utf-8") // convert utf-8 to gbk
+	cd, err := iconv.Open(destType, srcType)
+	if err != nil {
+		return dest, err
+	}
+	defer cd.Close()
+
+	dest = cd.ConvString(src)
+
+	return dest, err
 }
 
 //字串转换成unicode
