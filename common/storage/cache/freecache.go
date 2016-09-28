@@ -2,10 +2,11 @@ package cache
 
 import (
 	"fmt"
-	"github.com/coocood/freecache"
 	"runtime"
 	"runtime/debug"
 	"time"
+
+	"github.com/coocood/freecache"
 )
 
 func GCPause() time.Duration {
