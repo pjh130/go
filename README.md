@@ -27,6 +27,9 @@ golang
 ###================基础类库================
 * [开源的基础类库](https://github.com/dropbox/godropbox)
 
+###================语言编码转换================
+* [character-set conversion library implemented in Go](https://github.com/axgle/mahonia)
+
 ###================测试工具================
 * [http性能测试](https://github.com/rakyll/boom)
 
@@ -87,6 +90,7 @@ golang
 * [Go-Json-Rest](https://github.com/ant0ine/go-json-rest)
 * [easyjson](https://github.com/mailru/easyjson)
 * [go-simplejson](https://github.com/bitly/go-simplejson)
+* [jsoniter （ json-iterator ）是一款快且灵活的 JSON 解析器] https://github.com/json-iterator/go()
 
 ###================算法库================
 * [大量算法库](https://github.com/henrylee2cn/algorithm)
@@ -135,3 +139,6 @@ golang
 ###================分布式系统================
 * [Consul是HashiCorp公司推出的开源工具，用于实现分布式系统的服务发现与配置](https://github.com/hashicorp/consul)
 * [etcd是一个高可用的键值存储系统，主要用于共享配置和服务发现](https://github.com/coreos/etcd)
+
+###================go 实现直播服务================
+* [go 实现直播服务](https://github.com/qieangel2013/livego)

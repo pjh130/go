@@ -1,0 +1,45 @@
+﻿修改/tmp目录大小
+http://cocos.iteye.com/blog/1062149
+
+如果tmp目录空间不足
+sudo mount -t tmpfs -o size=100M none /tmp
+
+安装参看
+http://code.google.com/p/golang-china/wiki/Install
+
+安装gocode
+在命令行执行：go get -u github.com/nsf/gocode 。就会生成gocode.exe文件
+
+
+Installed Go for linux/arm in /home/linaro/go
+Installed commands in /home/linaro/go/bin
+*** You need to add /home/linaro/go/bin to your PATH.
+
+
+环境变量设置
+export GOROOT=~/go
+export GOARCH=arm
+export GOOS=linux
+export GOBIN=$GOROOT/bin
+export PATH=$PATH:$GOBIN
+export PATH=$PATH:$GOROOT/pkg/tool/linux_arm
+
+
+GOARCH="arm"
+GOBIN="/home/linaro/go/bin"
+GOCHAR="5"
+GOEXE=""
+GOHOSTARCH="arm"
+GOHOSTOS="linux"
+GOOS="linux"
+GOPATH=""
+GORACE=""
+GOROOT="/home/linaro/go"
+GOTOOLDIR="/home/linaro/go/pkg/tool/linux_arm"
+CC="gcc"
+GOGCCFLAGS="-g -O2 -fPIC -marm -pthread"
+CGO_ENABLED="1"
+
+
+安装中文输入法
+sudo apt-get install im-switch fcitx

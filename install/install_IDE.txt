@@ -6,6 +6,8 @@
 二、LiteIDE
 	1、https://github.com/visualfc/liteide
 	2、Binary downloads http://sourceforge.net/projects/liteide/files
+	3、Windows users should consider doing this instead:
+		go get -u -ldflags -H=windowsgui github.com/nsf/gocode
 	
 三、VS code golang 开发环境搭建
 	https://github.com/microsoft/vscode-go
