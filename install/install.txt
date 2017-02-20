@@ -1,14 +1,19 @@
-﻿修改/tmp目录大小
-http://cocos.iteye.com/blog/1062149
+下载相关程序。
+　　Golang下载：http://www.golangtc.com/download
+　　Git下载：http://git-scm.com/download/
+　　TDM-GCC下载：http://tdm-gcc.tdragon.net/download
+
+修改/tmp目录大小
+	http://cocos.iteye.com/blog/1062149
 
 如果tmp目录空间不足
-sudo mount -t tmpfs -o size=100M none /tmp
+	sudo mount -t tmpfs -o size=100M none /tmp
 
 安装参看
-http://code.google.com/p/golang-china/wiki/Install
+	http://code.google.com/p/golang-china/wiki/Install
 
 安装gocode
-在命令行执行：go get -u github.com/nsf/gocode 。就会生成gocode.exe文件
+	在命令行执行：go get -u github.com/nsf/gocode 。就会生成gocode.exe文件
 
 
 Installed Go for linux/arm in /home/linaro/go
