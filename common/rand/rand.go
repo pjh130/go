@@ -73,6 +73,17 @@ func RandLower(length int) string {
 	return string(RandomCreateBytes(length, numLower...))
 }
 
+//随机生成汉字
+func RandIntCN(length int) string {
+
+	a := make([]rune, length)
+	for i := range a {
+		a[i] = rune(RandInt(19968, 40869))
+	}
+
+	return string(a)
+}
+
 /**********************************************************************
  * 功能描述： 根据输入的数据随机指定长度内容
  * 输入参数： length-随机数字串的长度 alphabets-随机原始数据
