@@ -82,6 +82,7 @@ func String2Sha256(origData string) string {
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
 }
 
+//二进制的MD5
 func Bytes2Md5(origData []byte) string {
 	h := md5.New()
 
@@ -90,6 +91,7 @@ func Bytes2Md5(origData []byte) string {
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
 }
 
+//二进制的sha1
 func Bytes2Sha1(origData []byte) string {
 	h := sha1.New()
 
@@ -98,7 +100,8 @@ func Bytes2Sha1(origData []byte) string {
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
 }
 
-func Bytes2Sh256(origData []byte) string {
+//二进制的sh256
+func Bytes2Sha256(origData []byte) string {
 	h := sha256.New()
 
 	h.Write(origData)
@@ -106,6 +109,7 @@ func Bytes2Sh256(origData []byte) string {
 	return hex.EncodeToString(h.Sum(nil)) // 输出加密结果
 }
 
+//生成HTTP请求的sid
 func CreateHttpSid(r *http.Request, cryptoType string) string {
 	var sid string
 
@@ -117,21 +121,13 @@ func CreateHttpSid(r *http.Request, cryptoType string) string {
 	sig := fmt.Sprintf("%s%d%s", r.RemoteAddr, time.Now().UnixNano(), bs)
 
 	if "md5" == cryptoType {
-		h := md5.New()
-		h.Write([]byte(sig))
-		sid = hex.EncodeToString(h.Sum(nil))
+		sid = String2Md5(sig)
 	} else if "sha1" == cryptoType {
-		h := sha1.New()
-		h.Write([]byte(sig))
-		sid = hex.EncodeToString(h.Sum(nil))
+		sid = String2Sha1(sig)
 	} else if "sha256" == cryptoType {
-		h := sha256.New()
-		h.Write([]byte(sig))
-		sid = hex.EncodeToString(h.Sum(nil))
+		sid = String2Sha256(sig)
 	} else {
-		h := md5.New()
-		h.Write([]byte(sig))
-		sid = hex.EncodeToString(h.Sum(nil))
+		sid = String2Md5(sig)
 	}
 
 	return sid

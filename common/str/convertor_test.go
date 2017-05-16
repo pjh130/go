@@ -10,7 +10,7 @@ func TestIsLittleEndian(t *testing.T) {
 	log.Println("IsLittleEndian", IsLittleEndian())
 }
 
-func Test_NumAndBytes(t *testing.T) {
+func TestNumAndBytes(t *testing.T) {
 	if true {
 		var data int = -20
 		var result int = 0

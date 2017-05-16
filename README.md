@@ -19,6 +19,8 @@ golang
 * [Awesome Go收集了 Go 语言的流行库，框架和软件](https://github.com/avelino/awesome-go)
 * [OPEN经验库](http://www.open-open.com/lib/view/open1396063913278.html#Configuration_File_Parsers)
 * [开源社区](http://www.oschina.net/project/lang/358/go)
+* [为互联网IT人打造的中文版awesome-go](https://github.com/hackstoic/golang-open-source-projects)
+* [有哪些值得学习的 Go 语言开源项目](https://www.zhihu.com/question/20801814)
 
 ###Go 
 * [Go 语言包管理](https://gopm.io/)
@@ -41,6 +43,7 @@ golang
 * [http的文件服务器 gohttp](https://github.com/codeskyblue/gohttp)
 * [gocryptfs 是一个使用 Go 开发的，加密的覆盖文件系统](https://github.com/rfjakob/gocryptfs)
 * [bfs 是使用 Go 编写的分布式文件系统（小文件存储）](https://github.com/Terry-Mao/bfs)
+* [Go 实现的跨平台文件系统监控库](https://github.com/fsnotify/fsnotify)
 
 ###================WEB================
 * [Go静态网站生成器Hugo] (https://github.com/spf13/hugo)

@@ -16,7 +16,7 @@ import (
  * ----------------------------------------------------------------------
  *  20151215           V1.0            panpan            创建
  ************************************************************************/
-func StartAdminHttp(webaddr string) error {
+func StartAdminHttp(webAddr string) error {
 	adminServeMux := http.NewServeMux()
 	adminServeMux.HandleFunc("/debug/pprof/", pprof.Index)
 	adminServeMux.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
@@ -24,9 +24,9 @@ func StartAdminHttp(webaddr string) error {
 	adminServeMux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 	adminServeMux.HandleFunc("/debug/pprof/trace", pprof.Trace)
 
-	err := http.ListenAndServe(webaddr, adminServeMux)
+	err := http.ListenAndServe(webAddr, adminServeMux)
 	if err != nil {
-		x := fmt.Sprintf("http.ListenAdServe(\"%s\") failed (%s)", webaddr, err.Error())
+		x := fmt.Sprintf("http.ListenAdServe(\"%s\") failed (%s)", webAddr, err.Error())
 		fmt.Println(x)
 		return err
 	}

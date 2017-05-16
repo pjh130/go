@@ -88,7 +88,8 @@ func HumanDurationInt(now, before int) string {
 func HumanDurationInt64(now, before int64) string {
 	d := now - before
 	if d <= 60 {
-		return "just now"
+		return fmt.Sprintf("%d seconds ago", d)
+		//return "just now"
 	}
 
 	if d <= 120 {

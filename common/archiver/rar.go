@@ -22,7 +22,7 @@ func Rar(rarPath string, filePaths []string) error {
 
 // Unrar extracts the RAR file at source and puts the contents
 // into destination.
-func Unrar(source, destination string) error {
+func UnRar(source, destination string) error {
 	f, err := os.Open(source)
 	if err != nil {
 		return fmt.Errorf("%s: failed to open archive: %v", source, err)

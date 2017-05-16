@@ -26,9 +26,10 @@ var compare CompareFunc = nil
 //大于 1
 //等于 0
 const (
-	Less  = -1
-	More  = 1
-	Equal = 0
+	UnKnow = -2
+	Less   = -1
+	More   = 1
+	Equal  = 0
 )
 
 func CompareDefault(a, b interface{}) int {
@@ -37,7 +38,8 @@ func CompareDefault(a, b interface{}) int {
 
 	//判断如果不是相同的比较类型，那么直接报错
 	if t1 != t2 {
-		panic("a and b must same type")
+		//panic("a and b must same type")
+		return UnKnow
 	}
 
 	switch a.(type) {

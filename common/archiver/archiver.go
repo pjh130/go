@@ -39,5 +39,5 @@ var fileFormats = []struct {
 	{ext: ".tar.gz", create: TarGz, extract: UntarGz},
 	{ext: ".tgz", create: TarGz, extract: UntarGz},
 	{ext: ".tar.bz2", create: TarBz2, extract: UntarBz2},
-	{ext: ".rar", create: Rar, extract: Unrar},
+	{ext: ".rar", create: Rar, extract: UnRar},
 }
