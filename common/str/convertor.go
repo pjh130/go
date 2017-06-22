@@ -10,7 +10,7 @@ import (
 	"unsafe"
 )
 
-//判断是否是小字序
+//判断当前系统系统是否是小字序
 func IsLittleEndian() bool {
 	var i int32 = 0x01020304
 	u := unsafe.Pointer(&i)

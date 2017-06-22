@@ -63,7 +63,7 @@ func (d *Dispatcher) dispatch() {
 						log.Println("Find a idle worker id: ", key)
 
 						w.SetWorking()
-						d.WorkerPool[key] = w
+						//						d.WorkerPool[key] = w
 
 						w.JobChannel <- job
 						find = true

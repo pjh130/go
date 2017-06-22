@@ -31,8 +31,8 @@ type MyParser struct {
 
 func (this *MyParser) Decode(conn net.Conn) ([]byte, error) {
 	buf := make([]byte, 4096)
-	_, err := conn.Read(buf)
-	return buf, err
+	n, err := conn.Read(buf)
+	return buf[0:n], err
 }
 
 func (this *MyParser) Encode(data []byte) ([]byte, error) {

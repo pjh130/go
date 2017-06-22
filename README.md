@@ -143,5 +143,8 @@ golang
 * [Consul是HashiCorp公司推出的开源工具，用于实现分布式系统的服务发现与配置](https://github.com/hashicorp/consul)
 * [etcd是一个高可用的键值存储系统，主要用于共享配置和服务发现](https://github.com/coreos/etcd)
 
-###================go 实现直播服务================
+
 * [go 实现直播服务](https://github.com/qieangel2013/livego)
+
+###================go 绘制图表================
+* [plot 是一个用 Go 语言实现的绘图库](https://github.com/gonum/plot)

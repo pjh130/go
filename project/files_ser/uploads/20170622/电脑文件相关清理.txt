@@ -1,0 +1,4 @@
+ 关闭休眠功能：
+1、进入路径 C:\windows\system32,找到cmd.exe ，右键单击，选择以管理员方式运行；                 
+2、然后在cmd 命令窗口中输入 powercfg -h off,即可关闭休眠功能，同时 hiberfil.sys 文件也会自动删除。
+
