@@ -63,8 +63,8 @@ func StartServer(path string, parser Parser, toDo ToDoFunc) {
 		return
 	}
 
-	//开始工作
-	server.Working()
+	//监控
+	server.Watching()
 
 	//启动监听端口
 	var tempDelay time.Duration
@@ -131,13 +131,13 @@ func (this *Server) NewClient(conn net.Conn) {
 			select {
 			//处理接受到的消息.......................................
 			case req := <-client.In:
-				log.Println(string(req.Data))
+				log.Printf("%s说：%s", req.Key, string(req.Data))
 				this.toDo(this, req)
 			//客户端退出
 			case quit := <-client.Quit:
 				//调用客户端关闭方法
 				quit.Close()
-				log.Printf("客户端[%s]退出\n", quit.GetKey())
+				log.Printf("客户端[%s][%s]退出\n", quit.conn.RemoteAddr().String(), quit.GetKey())
 				this.lock.Lock()
 				delete(this.clients, quit.GetKey())
 				this.currClient--
@@ -151,16 +151,16 @@ func (this *Server) NewClient(conn net.Conn) {
 /*
 
  */
-func (this *Server) Working() {
-	go func() {
-		for {
-			select {
-			// 退出了一个连接
-			case client := <-this.quit:
-				// 调用客户端关闭方法
-				client.Close()
-				delete(this.clients, client.GetKey())
-			}
-		}
-	}()
+func (this *Server) Watching() {
+	//	go func() {
+	//		for {
+	//			select {
+	//			// 退出了一个连接
+	//			case client := <-this.quit:
+	//				// 调用客户端关闭方法
+	//				client.Close()
+	//				delete(this.clients, client.GetKey())
+	//			}
+	//		}
+	//	}()
 }

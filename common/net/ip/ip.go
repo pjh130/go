@@ -2,6 +2,7 @@ package ip
 
 import (
 	"errors"
+	"fmt"
 	"net"
 	"os"
 	"strconv"
@@ -89,6 +90,47 @@ func Ipstr2Int64(ip string) (int64, error) {
 	sum += int64(b3)
 
 	return sum, nil
+}
+
+// 是否是本地IP.
+func IsLocalhost(host string) bool {
+	return host == "localhost" ||
+		host == "ip6-localhost" ||
+		host == "ipv6-localhost"
+}
+
+//获取本地所有的IP
+func GetLocalIPs() ([]*net.IP, error) {
+	hostname, err := os.Hostname()
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("%s Failed to lookup hostname", err))
+	}
+	// Resolves IP Address from Hostname, this way overrides in /etc/hosts
+	// can work too for IP resolution.
+	ipInfo, err := net.ResolveIPAddr("ip4", hostname)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("%s Failed to resolve ip", err))
+	}
+	ips := []*net.IP{&ipInfo.IP}
+
+	// TODO(zviad): Is rest of the code really necessary?
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("%s Failed to get interface addresses.", err))
+	}
+	for _, addr := range addrs {
+		ipnet, ok := addr.(*net.IPNet)
+		if !ok {
+			continue
+		}
+
+		if ipnet.IP.IsLoopback() {
+			continue
+		}
+
+		ips = append(ips, &ipnet.IP)
+	}
+	return ips, nil
 }
 
 //获取本地IP

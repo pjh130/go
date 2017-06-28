@@ -59,6 +59,9 @@ golang
 ###================游戏框架================
 * [游戏服务器框架 gonet](http://gonet2.github.io/)
 * [Leaf 游戏服务器框架](https://github.com/name5566/leaf)
+* [高效的跨平台服务器网络库](https://github.com/davyxu/cellnet)
+* [mqant是简洁高效高性能的分布式游戏服务器框架](https://github.com/liangdas/mqant)
+* [xingo高性能网络库，游戏开发脚手架](https://github.com/viphxin/xingo)
 
 ###================爬虫================
 * [Go 爬虫软件 Pholcus](https://github.com/henrylee2cn/pholcus)
@@ -84,7 +87,9 @@ golang
 * [go 的简单网络框架 kendynet-go](https://github.com/sniperHW/kendynet-go)
 * [Teleport是一款适用于分布式系统的高并发API框架](https://github.com/henrylee2cn/teleport)
 * [qTunnel使用的安全套接字隧道](https://github.com/getqujing/qtunnel)
-* [Fast HTTP implementation for Go](https://github.com/valyala/fasthttp)
+* [fasthttp是Go的快速HTTP 实现](https://github.com/valyala/fasthttp)
+* [Echo是个快速的HTTP路由器和微型Web框架](https://github.com/labstack/echo)
+* [Gin is a web framework written in Golang](https://github.com/gin-gonic/gin)
 
 ###================json================
 * [ffjson: faster JSON for Go](https://github.com/pquerna/ffjson)

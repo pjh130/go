@@ -49,7 +49,7 @@ func CreateClient(key string, conn net.Conn, parser Parser) *Client {
 	}
 
 	//开始工作
-	client.Listen()
+	client.Working()
 
 	return client
 }
@@ -57,7 +57,7 @@ func CreateClient(key string, conn net.Conn, parser Parser) *Client {
 /*
  自动读入或者写出消息
 */
-func (this *Client) Listen() {
+func (this *Client) Working() {
 
 	if nil == this.parser {
 		log.Println("Parser 不能为空")
