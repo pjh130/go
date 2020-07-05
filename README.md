@@ -21,6 +21,7 @@ golang
 * [开源社区](http://www.oschina.net/project/lang/358/go)
 * [为互联网IT人打造的中文版awesome-go](https://github.com/hackstoic/golang-open-source-projects)
 * [有哪些值得学习的 Go 语言开源项目](https://www.zhihu.com/question/20801814)
+* [Go最新资料汇总链接](https://github.com/ty4z2008/Qix/blob/master/golang.md)
 
 ###Go 
 * [Go 语言包管理](https://gopm.io/)
@@ -79,6 +80,7 @@ golang
 * [悟空全文搜索引擎](https://github.com/huichen/wukong)
 * [现代化的文本索引库，可以做多种形式的索引及搜索查询,对于文档内容索引应该是非常好用的](https://github.com/blevesearch/bleve)
 * [GoLucene 是 Java 的 Lucene 搜索引擎的 Go 语言移植版本](https://github.com/balzaczyy/golucene)
+* ["结巴"中文分词的Golang语言版本](https://github.com/yanyiwu/gojieba)
 
 ###================Reader================
 * [开源的 Google Reader 替代品 GoRead](https://github.com/mjibson/goread)
