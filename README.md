@@ -64,7 +64,8 @@ golang
 * [mqant是简洁高效高性能的分布式游戏服务器框架](https://github.com/liangdas/mqant)
 * [xingo高性能网络库，游戏开发脚手架](https://github.com/viphxin/xingo)
 
-###================爬虫================
+###================爬虫，下载================
+* [DHT实现了BitTorrent DHT协议](https://github.com/shiyanhui/dht)
 * [Go 爬虫软件 Pholcus](https://github.com/henrylee2cn/pholcus)
 * [分布式爬虫 ants](https://github.com/wcong/ants-go)
 * [爬虫框架 go_spider](https://github.com/hu17889/go_spider)
