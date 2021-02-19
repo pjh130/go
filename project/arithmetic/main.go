@@ -238,6 +238,7 @@ func swap(b []byte, begin, end int) {
 
 	}
 }
+
 func reverseStr(str *string) {
 
 	begin := 0
@@ -260,7 +261,6 @@ func reverseStr(str *string) {
 }
 
 //$-反转句子里面单词的顺序
-
 func main() {
 	/*
 		//var b uint32 = 6

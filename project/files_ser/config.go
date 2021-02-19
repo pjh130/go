@@ -25,13 +25,13 @@ func initConfig() {
 }
 
 func checkUploadDir() {
-	Uploadinfo, err := os.Stat(RootDir + UPLOAD_DIR)
+	info, err := os.Stat(RootDir + UPLOAD_DIR)
 	if err != nil {
 		os.Mkdir(RootDir+UPLOAD_DIR, os.ModePerm)
 		log.Println("os.Mkdir(" + RootDir + UPLOAD_DIR)
 		return
 	}
-	if Uploadinfo.IsDir() {
+	if info.IsDir() {
 		// it's a file
 	} else {
 		os.Mkdir(RootDir+UPLOAD_DIR, os.ModePerm)

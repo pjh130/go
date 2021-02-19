@@ -152,11 +152,11 @@ func LocalIP() (string, error) {
 	return "", errors.New("can't get local IP")
 }
 
-var myHostname string
-var myHostnameOnce sync.Once
-
 //主机名
 func MyHostName() string {
+	var myHostname string
+	var myHostnameOnce sync.Once
+
 	myHostnameOnce.Do(func() {
 		var err error
 		myHostname, err = os.Hostname()

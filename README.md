@@ -1,6 +1,7 @@
 golang
 
 ###GO网站
+* [Go必看学习教程](http://www.topgoer.com/)
 * [GO语言中文网](http://studygolang.com/)
 * [Golang中国社区](http://www.golangtc.com/)
 
@@ -119,6 +120,7 @@ golang
 
 ###================图形框架================
 * [GoQt是一个Go语言的GUI工具包](https://github.com/visualfc/goqt)
+* [Golang Desktop Automation.键盘鼠标屏幕位图事件窗口](https://github.com/go-vgo/robotgo)
 
 ###================excel================
 * [Excelize ](https://github.com/Luxurioust/excelize)
