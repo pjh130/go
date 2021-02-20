@@ -2,6 +2,7 @@ golang
 
 ###GO网站
 * [Go必看学习教程](http://www.topgoer.com/)
+* [Go技术文章精选by韩亚军](https://hanyajun.com/golang/go_article_2019/)
 * [GO语言中文网](http://studygolang.com/)
 * [Golang中国社区](http://www.golangtc.com/)
 
