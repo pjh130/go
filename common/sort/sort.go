@@ -1,8 +1,49 @@
 package sort
 
-import (
-	"math"
-)
+// "math"
+
+//根据需求修改getValue的返回值类型
+type Obj interface {
+	GetValue() int
+}
+
+//交换模板
+func SwapT(a []Obj, i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+//交换
+func Swap(a []int, i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+//根据需求比较getValue的返回值类型
+func IsMax(a, b Obj) bool {
+	if a.GetValue() < b.GetValue() {
+		return true
+	}
+	return false
+}
+
+//冒泡
+func BubbleSortT(a []Obj) []Obj {
+	q := len(a)
+	f := true
+	for i := 0; i < q-1; i++ { //有多少个数字需要比较 注意不和自己比较所以减一个
+		{
+			for j := 0; j < q-i-1; j++ { //某个数字需要和别的多少个数字比较 排好序的不用比较
+				if IsMax(a[j], a[j+1]) {
+					SwapT(a, j, j+1)
+					f = false
+				}
+			}
+			if f == true {
+				return a
+			}
+		}
+	}
+	return a
+}
 
 //冒泡
 func BubbleSort(a []int) []int {
@@ -12,7 +53,7 @@ func BubbleSort(a []int) []int {
 		{
 			for j := 0; j < q-i-1; j++ { //某个数字需要和别的多少个数字比较 排好序的不用比较
 				if a[j] > a[j+1] {
-					swap(a, j, j+1)
+					Swap(a, j, j+1)
 					f = false
 				}
 			}
@@ -28,29 +69,29 @@ func BubbleSort(a []int) []int {
 func SelectionSort(a []int) []int {
 	l := len(a)
 	for i := 0; i < l-1; i++ {
-		min := a[i]
+		min := i // 初始的最小值位置从0开始，依次向右
 		for j := i + 1; j < l; j++ {
-			if min > a[j] {
-				min = a[j]
+			if a[min] > a[j] {
+				min = j
 			}
 		}
-		a[i], min = min, a[i]
+		a[i], a[min] = a[min], a[i]
 	}
 	return a
 }
 
 //插入排序
-func InsertionSort(a []int) []int {
-	for i := 0; i < len(a)-1; i++ {
-		pre := i - 1
-		cre := a[i]
-		for pre >= 0 && a[pre] > cre {
-			a[pre+1] = a[pre]
-			pre -= 1
-		}
-		a[pre+1] = cre
+func InsertionSort(s []int) []int {
+	n := len(s)
+	if n < 2 {
+		return s
 	}
-	return a
+	for i := 1; i < n; i++ {
+		for j := i; j > 0 && s[j] < s[j-1]; j-- {
+			Swap(s, j, j-1)
+		}
+	}
+	return s
 }
 
 //快速
@@ -64,7 +105,7 @@ func QuickSort(a []int, low, high int) []int {
 		if a[j] <= start {
 			i++
 			if i != j {
-				swap(a, i, j)
+				Swap(a, i, j)
 			}
 		}
 	}
@@ -138,7 +179,7 @@ func HeapSort(a []int) []int {
 	arrLen := len(a)
 	buildMaxHeap(a, arrLen)
 	for i := arrLen - 1; i >= 0; i-- {
-		swap(a, 0, i)
+		Swap(a, 0, i)
 		arrLen -= 1
 		heapify(a, 0, arrLen)
 	}
@@ -163,7 +204,7 @@ func heapify(a []int, i, arrLen int) {
 		largest = right
 	}
 	if largest != i {
-		swap(a, i, largest)
+		Swap(a, i, largest)
 		heapify(a, largest, arrLen)
 	}
 }
@@ -221,52 +262,55 @@ func Sort(a []int) []int {
 }
 
 //基数排序
-func RadixSort(a []int) []int {
-	max := getMaxInArr(a)
-	//获取最大值的位数
-	var count int = 0
-	for max%10 > 0 {
+func RadixSort(data []int) []int {
+	if len(data) < 2 {
+		return data
+	}
+	max := data[0]
+	dataLen := len(data)
+	for i := 1; i < dataLen; i++ {
+		if data[i] > max {
+			max = data[i]
+		}
+	}
+	// 计算最大值的位数
+	maxDigit := 0
+	for max > 0 {
 		max = max / 10
-		count++
+		maxDigit++
 	}
-
-	//给桶中对应的位置放数据
-	for i := 0; i < count; i++ {
-
-		theData := int(math.Pow10(i)) //10的i次方
-		//建立并初始化空桶
-		var bucket [10][10]int
-		for i := 0; i < 10; i++ {
-			for j := 0; j < 10; j++ {
-				bucket[i][j] = -1
-			}
+	// 定义每一轮的除数，1,10,100...
+	divisor := 1
+	// 定义了10个桶，为了防止每一位都一样所以将每个桶的长度设为最大,与原数组大小相同
+	bucket := [10][20]int{{0}}
+	// 统计每个桶中实际存放的元素个数
+	count := [10]int{0}
+	// 获取元素中对应位上的数字，即装入那个桶
+	var digit int
+	// 经过maxDigit+1次装通操作，排序完成
+	for i := 1; i <= maxDigit; i++ {
+		for j := 0; j < dataLen; j++ {
+			tmp := data[j]
+			digit = (tmp / divisor) % 10
+			bucket[digit][count[digit]] = tmp
+			count[digit]++
 		}
-		//给桶赋值
-		for k := 0; k < len(a); k++ {
-			theResidue := (a[k] / theData) % 10 //取余
-			for m := 0; m < 10; m++ {
-				if bucket[theResidue][m] == -1 {
-					bucket[theResidue][m] = a[k]
-					break
-				} else {
-					continue
-				}
+		// 被排序数组的下标
+		k := 0
+		// 从0到9号桶按照顺序取出
+		for b := 0; b < 10; b++ {
+			if count[b] == 0 {
+				continue
 			}
-		}
-		var x = 0
-		//出桶
-		for p := 0; p < len(bucket); p++ {
-			for q := 0; q < len(bucket[p]); q++ {
-				if bucket[p][q] != -1 {
-					a[x] = bucket[p][q]
-					x++
-				} else {
-					break
-				}
+			for c := 0; c < count[b]; c++ {
+				data[k] = bucket[b][c]
+				k++
 			}
+			count[b] = 0
 		}
+		divisor = divisor * 10
 	}
-	return a
+	return data
 }
 
 //************************公共函数
@@ -279,9 +323,4 @@ func getMaxInArr(a []int) int {
 		}
 	}
 	return max
-}
-
-//交换
-func swap(a []int, i, j int) {
-	a[i], a[j] = a[j], a[i]
 }
