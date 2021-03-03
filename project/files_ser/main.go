@@ -14,7 +14,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	//自带上传工具
+	//自带上传工具(也是找不到的默认页面)
 	mux.HandleFunc("/", safeHandler(uploadHtmlHandler))
 
 	//上传接口

@@ -4,6 +4,7 @@ import (
 	_ "github.com/pjh130/go/project/api/routers"
 
 	"github.com/astaxie/beego"
+	"github.com/pjh130/go/project/api/controllers"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 		beego.BConfig.Listen.AdminAddr = "localhost"
 		beego.BConfig.Listen.AdminPort = 8088
 	}
+	beego.ErrorController(&controllers.ErrorController{})
 
 	beego.Run()
 }

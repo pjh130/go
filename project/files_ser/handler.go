@@ -64,6 +64,13 @@ func renderHtml(w http.ResponseWriter, tmpl string, locals map[string]interface{
 
 //一个简单的上传WEB
 func uploadHtmlHandler(w http.ResponseWriter, r *http.Request) {
+	// if r.URL.Path != "/" {
+	// 	w.WriteHeader(404)
+	// 	w.Write([]byte("<h1>404</h1>"))
+	// } else {
+	// 	w.Write([]byte("index"))
+	// }
+
 	renderHtml(w, "upload", nil)
 }
 
