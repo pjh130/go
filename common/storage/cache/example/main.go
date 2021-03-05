@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/pjh130/go/common/cachelib"
 	"log"
+
+	"github.com/pjh130/go/common/storage/cache"
 )
 
 func main() {
 	log.Println("====================")
-	cachelib.FreeCacheTest()
+	cache.FreeCacheTest()
+	cache.TestGoCache()
 }
