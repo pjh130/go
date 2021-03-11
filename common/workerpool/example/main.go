@@ -11,10 +11,16 @@ type Student struct {
 	Name string
 }
 
-func myWorker(t interface{}) error {
-	log.Println("I am working function:", t)
+func (t *Student) SayHello() {
+	log.Println("Hello world!")
+}
 
-	//	log.Println("I am working function:", t.(Student).Name)
+func myWorker(t interface{}) error {
+	// log.Println("I am working function:", t)
+
+	log.Println("I am working function Name: ", t.(Student).Name)
+	log.Println("I am working function Age: ", t.(Student).Age)
+	// log.Println("I am working function Age: ", t.(Student).SayHello())
 
 	return nil
 }
@@ -37,6 +43,5 @@ func main() {
 
 	wp.Working(c)
 
-	ch := make(chan int)
-	<-ch
+	select {}
 }
