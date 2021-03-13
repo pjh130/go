@@ -9,22 +9,25 @@ import (
 )
 
 func main() {
-	//输出结构体和map
-	if true {
-		Test2()
-		return
-	}
+	v := 4
+	switch v {
+	case 1:
+		break
+	case 2:
+		Test2() //输出结构体和map
+		break
+	case 3:
+		Test3() //html回调go中的函数
+		break
+	case 4:
+		Test4() //传值给html页面
+		break
+	case 5:
+		break
+	default:
 
-	//html回调go中的函数
-	if false {
-		Test3()
 	}
-
-	//传值给html页面
-	if true {
-		Test4()
-	}
-
+	// return
 	//服务器性能查看
 	go pprof.StartAdminHttp(":8081")
 

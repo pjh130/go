@@ -37,6 +37,7 @@ golang
 
 ###================测试工具================
 * [http性能测试](https://github.com/rakyll/boom)
+* [Testify - Thou Shalt Write Tests](https://github.com/stretchr/testify)
 
 ###================文件系统================
 * [分布式文件系统 SeaweedFS](https://github.com/chrislusf/seaweedfs)
@@ -89,7 +90,8 @@ golang
 * [开源的 Google Reader 替代品 GoRead](https://github.com/mjibson/goread)
 
 ###================网络库================
-* [go 的简单网络框架 kendynet-go](https://github.com/sniperHW/kendynet-go)
+* [Gorilla WebSocket is a Go implementation of the WebSocket protocol](https://github.com/gorilla/websocket)
+* [go 的简单网络框架 kendynet-go](https://github.com/sniperHW/kendynet)
 * [Teleport是一款适用于分布式系统的高并发API框架](https://github.com/henrylee2cn/teleport)
 * [qTunnel使用的安全套接字隧道](https://github.com/getqujing/qtunnel)
 * [fasthttp是Go的快速HTTP 实现](https://github.com/valyala/fasthttp)

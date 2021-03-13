@@ -8,6 +8,17 @@ import (
 	"time"
 )
 
+var testTpl string = `<!DOCTYPE html>
+<html>
+<head>
+	<title>template</title>
+</head>
+<body>
+receive test data: {{.vv}} <br>
+</body>
+</html>
+`
+
 type Person struct {
 	Name    string
 	Age     int
@@ -24,10 +35,25 @@ type OnlineUser struct {
 func Test4() {
 	go func() {
 		http.HandleFunc("/", Handler)
+		http.HandleFunc("/test", test)
 		http.ListenAndServe(":8080", nil)
 	}()
 }
 
+func test(w http.ResponseWriter, r *http.Request) {
+	var v []byte = make([]byte, 1024)
+	n, _ := r.Body.Read(v)
+	Vv := v[:n]
+	fmt.Println(string(Vv))
+
+	t := template.New("Person template")
+	t, err := t.Parse(testTpl)
+
+	checkError(err)
+	data := map[string]interface{}{"vv": string(Vv)}
+	err = t.Execute(w, data)
+	// w.Write([]byte("receive post test"))
+}
 func Handler(w http.ResponseWriter, r *http.Request) {
 	zoro := Person{
 		Name:    "zoro",
