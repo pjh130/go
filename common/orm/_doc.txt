@@ -1,0 +1,48 @@
+总结
+	相似性
+		各orm支持的数据库都基本相同（主流数据库都支持）
+		支持事务性、链式查询等
+	
+	差异
+		xorm、gorose支持批量查询处理
+		xorm支持主从式读写分离
+		gorm支持热加载
+		gorose便于在多个数据库切换
+		文档全面性gorm>xorm>gorose
+====================================================
+
+xorm
+	支持的数据库有：mysql、mymysql、postgres、tidb、sqlite、mssql、oracle
+	事务性支持
+	链式api
+	支持原生sql操作
+	查询缓存
+	可根据数据库反转生成代码
+	级联加载
+	提供sql语句日志输出
+	支持批量查询处理
+	自动化的读写分离/主从式
+	
+gorm
+	hook机制(Before/After Create/Save/Update/Delete/Find)
+	对象关系Has One, Has Many, Belongs To, Many To Many, Polymorphism
+	热加载
+	支持原生sql操作
+	事务性
+	链式api
+	支持的数据库有：mysql、postgre、sqlite、sqlserver
+	查询操作
+	
+gorose
+	支持的数据库有：mysql、postgres、sqlite、mssql、oracle
+	链式api
+	同时连接多个数据库和切换
+	支持原生sql操作
+	支持批量查询处理
+	事务性
+	
+upper/db
+	支持的数据库有:PostgreSQL, MySQL, SQLite, MSSQL, QL and MongoDB.
+	不支持根据数据库类生成数据库表等DCL操作,只有DQL,DML
+	与大部分orm 框架相同,提供连接池
+	对RDBMS支持事务性

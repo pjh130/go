@@ -16,7 +16,7 @@ func GCPause() time.Duration {
 	return stats.Pause[0]
 }
 
-func FreeCacheTest() {
+func TestFreeCache() {
 
 	n := 3000 * 1000
 	debug.SetGCPercent(10)

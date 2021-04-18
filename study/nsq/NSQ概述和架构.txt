@@ -1,0 +1,36 @@
+一、NSQ系列(一)：概述和架构（https://blog.csdn.net/whucs2/article/details/102013700）
+	关于NSQ
+		NSQ是Go开发的，比较轻量的一款MQ。公司很多项目使用了NSQ作为消息队列，也借此了解下NSQ。
+		先说下NSQ的几个特性，
+
+		分布式部署，没有单点问题
+		支持水平扩容
+		消息优先存储在内存(超过限制后可以保持在磁盘)
+		Consumer可以动态发现Producer
+		
+	架构
+		集群两个主要角色：nsqd和nsqlookupd。
+		
+	nsqd
+	nsqd负责提供集群的主要功能，一个nsqd实例同时处理多个数据流。与Kafka类似，一个数据流也可以被称为一个topic。NSQ还有一个Channel的概念，类似于Kafka的ConsumerGroup，一个topic可以对应多个Channel，不同的是，每个Channel都存储一份完整的数据(完整的未消费的数据)，而Kafka则是存储同一份数据，通过Offset来区分不同的ConsumerGroup的消费进度。Consumer需要指定一个Channel才能消费数据。
+	一个Channel通常会与多个Consumer Client建立连接。当channel中存在待处理的消息时，Channel会从多个Client中随机选择一个进行推送.
+	客户端可以发布消息到nsqd守护进程上，或者从nsqd守护进程上读取消息。通常，消息发布者会向一个单一的local nsqd发布消息，消费者从连接了的一组nsqd节点的topic上远程读取消息。如果你不关心动态添加节点功能，你可以直接运行standalone模式。
+	
+	nsqlookupd
+		nsqlookupd主要提供服务发现功能，Consumer可以通过nsqlookupd来知道它要消费的Channel数据分布在哪些nsqd实例。nsqlookupd服务器像consul或etcd那样工作，只是它被设计得没有协调和强一致性能力。每个nsqlookupd都作为nsqd节点注册信息的短暂数据存储区。消费者连接这些节点去检测需要从哪个nsqd节点上读取消息。
+	
+	交互
+		每个nsqd都会与nsqlookupd建立一个TCP长连接，并且定期向nsqlookupd上报自己的状态信息，主要包括自己当前处理那些Topic以及对应Topic包含哪些Channel
+		
+		
+二、NSQ系列(二)：nsqd原理和实现（https://blog.csdn.net/whucs2/article/details/102021658）
+	数据结构主要三部分：NSQD、Topic和Channel
+	NSQD nsqd守护进程是NSQ的核心部分，它是一个单独的监听某个端口进来的消息的二进制程序。每个nsqd节点都独立运行，不共享任何状态。当一个节点启动时，它向一组nsqlookupd节点进行注册操作，并将保存在此节点上的topic和channel进行广播。
+	
+	Topic 一个topic就是程序发布消息的一个逻辑键，当程序第一次发布消息时就会创建topic
+	
+	Channel channel组与消费者相关，是消费者之间的负载均衡，channel在某种意义上来说是一个“队列”。每当一个发布者发送一条消息到一个topic，消息会被复制到所有消费者连接的channel上，消费者通过这个特殊的channel读取消息，实际上，在消费者第一次订阅时就会创建channel。Channel会将消息进行排列，如果没有消费者读取消息，消息首先会在内存中排队，当量太大时就会被保存到磁盘中。
+	
+	
+三、NSQ系列(三)：nsqlookupd原理和实现（https://blog.csdn.net/whucs2/article/details/102103563）
+	nsqlookupd的角色类似于注册中心，管理着nsqd -> Topic -> Channel的拓扑信息，提供Client查询Topic和Channel的信息。nsqlookupd主要提供两种接口：TCP接口，用于nsqd广播信息；另外就是HTTP接口，让Client可以服务发现或者admin可以进行管理操作。

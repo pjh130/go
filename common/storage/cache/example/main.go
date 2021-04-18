@@ -8,6 +8,8 @@ import (
 
 func main() {
 	log.Println("====================")
-	cache.FreeCacheTest()
-	cache.TestGoCache()
+	// cache.TestFreeCache()
+	// cache.TestGoCache()
+	// cache.TestGroupcache()
+	cache.TestCache2go()
 }

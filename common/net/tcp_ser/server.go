@@ -64,7 +64,7 @@ func StartServer(path string, parser Parser, toDo ToDoFunc) {
 	}
 
 	//监控
-	server.Watching()
+	// server.Watching()
 
 	//启动监听端口
 	var tempDelay time.Duration
