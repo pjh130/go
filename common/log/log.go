@@ -7,6 +7,7 @@ import (
 	"github.com/cihub/seelog"
 	"github.com/davyxu/golog"
 	"github.com/golang/glog"
+	"github.com/jeanphorn/log4go"
 )
 
 /*
@@ -14,7 +15,7 @@ fileLogger是一个基于Go开发的可自动分割文件进行备份的异步�
 1、日志文件可按文件大小进行备份,可定制文件大小和数量
 2、日志文件可按日期进行备份
 */
-func example1() {
+func exampleLileLogger() {
 	logFile := fileLogger.NewDefaultLogger("./log", "test.log")
 	//	logFile := fileLogger.NewDailyLogger("./log", "test.log")
 	//	logFile := fileLogger.NewSizeLogger("./log", "test.log")
@@ -31,7 +32,7 @@ func example1() {
 /*
 这是一个用来处理日志的库，目前支持的引擎有 file、console、net、smtp
 */
-func example2() {
+func exampleLogs() {
 	//初始化 log 变量（10000 表示缓存的大小）：
 	log := logs.NewLogger(10000)
 
@@ -66,12 +67,12 @@ SMTP writer
 https://github.com/cihub/seelog-examples
 https://github.com/cihub/seelog/wiki/Example-config
 */
-func example3() {
+func exampleSeelog() {
 	defer seelog.Flush()
 	seelog.Info("Hello from Seelog!")
 }
 
-func example4() {
+func exampleLogrus() {
 	logrus.WithFields(logrus.Fields{
 		"animal": "walrus",
 	}).Info("A walrus appears")
@@ -89,7 +90,7 @@ func example5() {
 	//	glog.Fatalf("Initialization failed: %s", err)
 }
 
-func example6() {
+func exampleGolog() {
 	// // 基本使用
 	// var log *golog.Logger = golog.New("test")
 	// log.Debugln("hello world")
@@ -153,4 +154,37 @@ func example6() {
 
 	log.Debugf("自定义紫色 + 固定头部内容")
 	log.Debugf("自定义紫色 + 固定头部内容2")
+}
+
+/*
+日志输出到终端
+日志输出到文件，支持按大小和时间切片
+日志输出到网络
+日志异步输出
+支持json文件配置
+日志分类
+不同类别的日志，输出到不同的printer中.
+兼容老的日志方式
+*/
+func exampleLog4go() {
+	// load config file, it's optional
+	// or log.LoadConfiguration("./example.json", "json")
+	// config file could be json or xml
+	log4go.LoadConfiguration("./example.json")
+
+	log4go.LOGGER("Test").Info("category Test info test ...")
+	log4go.LOGGER("Test").Info("category Test info test message: %s", "new test msg")
+	log4go.LOGGER("Test").Debug("category Test debug test ...")
+
+	// Other category not exist, test
+	log4go.LOGGER("Other").Debug("category Other debug test ...")
+
+	// socket log test
+	log4go.LOGGER("TestSocket").Debug("category TestSocket debug test ...")
+
+	// original log4go test
+	log4go.Info("normal info test ...")
+	log4go.Debug("normal debug test ...")
+
+	log4go.Close()
 }

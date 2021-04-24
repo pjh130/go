@@ -88,6 +88,7 @@ func main() {
 
 }
 
+//这个不好
 func test1() {
 	wp := &workerpool.WorkerPool{
 		WorkerFunc:      myWorker,
@@ -106,6 +107,7 @@ func test1() {
 	wp.Working(c)
 }
 
+//推荐用这个
 func test2() {
 	c := Student{
 		Age:  20,

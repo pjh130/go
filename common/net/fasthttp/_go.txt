@@ -1,0 +1,21 @@
+ fasthttp号称是比go原生的net/http快10倍，其快速高性能的原因之一就是采用了各种池化技术
+
+如果这个web server是一个高并发的server，那这里的取到的request body就会有丢失一部分数据.
+为什么会出现上面的问题？复用惹的祸,这个问题在golang官方的net/http下是不存在的。问题的根源
+就在这个RequestCtx。fasthttp获取RequestCtx对象的代码，我们可以看出fasthttp使用了一个
+ctxPool来维护RequestCtx，每次请求都先去ctxPool中获取。如果能获取到就用池中已经存在的，
+如果获取不到，new出一个新的RequestCtx。这也就是fasthttp性能高的一个主要原因，复用RequestCtx
+可以减少创建对象所有的时间以及减少内存使用率。但是随之而来的问题是：如果在高并发的场景下，
+如果整个请求链路中有另起的goroutine，前一个RequestCtx处理完成业务逻辑以后(另起的协程还
+没有完成)，立刻被第二个请求使用，那就会发生前文所述的错乱的request body。
+
+目前是通过复制一个新的request来解决这个问题
+	newrequest := &fasthttp.Request{}
+	ctx.Request.CopyTo(newrequest)
+	//获取body
+	body := newrequest.Body()
+	
+ReadTimeout字段，这个字段的我个人理解的意思就是当请求发出之后，达到ReadTimeout
+时间还没有得到返回值，客户端就会把连接断开（释放）。
+以上就是这次经验之谈，切记，使用fasthttp的时候，加上ReadTimeout字段。
+

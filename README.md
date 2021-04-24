@@ -33,6 +33,10 @@ golang
 ###================基础类库================
 * [开源的基础类库](https://github.com/dropbox/godropbox)
 
+###================golang协程池================
+* [Package pool implements a limited consumer goroutine or unlimited goroutine pool for easier goroutine handling and cancellation](https://github.com/go-playground/pool)
+* [ants是一个受fasthttp启发的高性能协程池](https://github.com/panjf2000/ants)
+
 ###================语言编码转换================
 * [character-set conversion library implemented in Go](https://github.com/axgle/mahonia)
 
@@ -68,6 +72,8 @@ golang
 * [高效的跨平台服务器网络库](https://github.com/davyxu/cellnet)
 * [mqant是简洁高效高性能的分布式游戏服务器框架](https://github.com/liangdas/mqant)
 * [xingo高性能网络库，游戏开发脚手架](https://github.com/viphxin/xingo)
+* [nano - 重量轻，设备，高性能的基于 golang 游戏服务器架构](https://github.com/lonng/nano)
+* [goworld- 可扩展的游戏服务器引擎，具有空间实体框架和热插拔功能](https://github.com/xiaonanln/goworld)
 
 ###================爬虫，下载================
 * [DHT实现了BitTorrent DHT协议](https://github.com/shiyanhui/dht)
@@ -96,11 +102,16 @@ golang
 * [go 的简单网络框架 kendynet-go](https://github.com/sniperHW/kendynet)
 * [Teleport是一款适用于分布式系统的高并发API框架](https://github.com/henrylee2cn/teleport)
 * [qTunnel使用的安全套接字隧道](https://github.com/getqujing/qtunnel)
-* [fasthttp是Go的快速HTTP 实现](https://github.com/valyala/fasthttp)
-* [Echo是个快速的HTTP路由器和微型Web框架](https://github.com/labstack/echo)
-* [Gin is a web framework written in Golang](https://github.com/gin-gonic/gin)
 * [gnet 是一个高性能、轻量级、非阻塞的事件驱动 Go 网络框架](https://github.com/panjf2000/gnet)
 * [cellnet是一个组件化、高扩展性、高性能的开源服务器网络库](https://github.com/davyxu/cellnet)
+
+###================WEB框架================
+* [fasthttp号称是比go原生的net/http快10倍](https://github.com/valyala/fasthttp)
+* [高性能分支从httprouter第一个适合的路由器 fasthttp](https://github.com/buaazp/fasthttprouter)
+* [Echo是个快速的HTTP路由器和微型Web框架](https://github.com/labstack/echo)
+* [Gin 它具有类似于 martini 的 API，性能更高的Web框架](https://github.com/gin-gonic/gin)
+* [Revel是一个高生产力的Go语言Web框架](https://github.com/revel/revel)
+* [beego 是一种用于 Go 编程语言的开源高性能 Web 框架](https://github.com/astaxie/beego)
 
 ###================json================
 * [ffjson: faster JSON for Go](https://github.com/pquerna/ffjson)
@@ -109,7 +120,7 @@ golang
 * [Go-Json-Rest](https://github.com/ant0ine/go-json-rest)
 * [easyjson](https://github.com/mailru/easyjson)
 * [go-simplejson](https://github.com/bitly/go-simplejson)
-* [jsoniter （ json-iterator ）是一款快且灵活的 JSON 解析器] https://github.com/json-iterator/go()
+* [jsoniter （json-iterator）是一款快且灵活的 JSON 解析器] https://github.com/json-iterator/go()
 
 ###================算法库================
 * [大量算法库](https://github.com/henrylee2cn/algorithm)

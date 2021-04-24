@@ -33,3 +33,31 @@ func requestHandler(ctx *fasthttp.RequestCtx) {
 
 	ctx.SetContentType("text/plain; charset=utf8")
 }
+
+func TestFasthttpClient1() {
+	statusCode, body, err := fasthttp.GetTimeout(nil, "http://localhost:60000", 10*time.Second)
+	if err != nil {
+		log.Fatalf("Error w: %s", err)
+	}
+	if statusCode != fasthttp.StatusOK {
+		log.Fatalf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
+	}
+	log.Println(len(body))
+}
+
+func TestFasthttpClient() {
+	c := &fasthttp.Client{
+		MaxIdleConnDuration: 10,
+	}
+	// statusCode, body, err := c.Get(nil, "http://www.baidu.com/")
+	// statusCode, body, err := c.Get(nil, "http://localhost:60000")
+	statusCode, body, err := c.GetTimeout(nil, "http://localhost:60000", 10*time.Second)
+	if err != nil {
+		log.Fatalf("Error w: %s", err)
+	}
+	if statusCode != fasthttp.StatusOK {
+		log.Fatalf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
+	}
+
+	log.Println(string(body))
+}

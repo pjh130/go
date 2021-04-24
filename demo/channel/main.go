@@ -8,10 +8,23 @@ import (
 var i int = 1
 
 func main() {
-	//	channelTest1()
-	//	channelTest2()
+	// channelTest()
+	// channelTest1()
+	// channelTest2()
 	channelTest3()
-	//	channelTest4()
+	// channelTest4()
+}
+
+func channelTest() {
+
+	var c1 chan string = make(chan string)
+	go func() {
+		time.Sleep(time.Second * 2)
+		c1 <- "result 1"
+	}()
+	fmt.Println("I am here")
+	fmt.Println("c1 is", <-c1)
+
 }
 
 func channelTest1() {
@@ -73,7 +86,7 @@ func createCounter(start int) chan int {
 }
 
 func channelTest3() {
-	count := 20
+	count := 200
 	ch := make(chan int, count)
 	go func() {
 		for i := 0; i < count; i++ {
@@ -91,7 +104,7 @@ func channelTest3() {
 	//	tick := time.NewTicker(3*time.Second)
 	for {
 		select {
-		case <-time.After(3 * time.Second):
+		case <-time.After(5 * time.Second):
 			fmt.Println(time.Now())
 		}
 	}
@@ -111,6 +124,7 @@ func channelTest3() {
 	//		}
 	//	}
 }
+
 func channelTest4() {
 	tab := []int{1, 3, 0, 5}
 

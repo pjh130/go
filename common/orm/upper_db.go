@@ -1,5 +1,5 @@
 package orm
 
 import (
-	_ "github.com\upper\db"
+	_ "github.com/upper/db"
 )
