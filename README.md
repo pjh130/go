@@ -55,7 +55,7 @@ golang
 * [Go 实现的跨平台文件系统监控库](https://github.com/fsnotify/fsnotify)
 
 ###================WEB================
-* [Go静态网站生成器Hugo] (https://github.com/spf13/hugo)
+* [Go静态网站生成器Hugo](https://github.com/spf13/hugo)
 * [Negroni 是一个很地道的 web 中间件](https://github.com/urfave/negroni)
 
 ###===============消息推送================
@@ -120,7 +120,7 @@ golang
 * [Go-Json-Rest](https://github.com/ant0ine/go-json-rest)
 * [easyjson](https://github.com/mailru/easyjson)
 * [go-simplejson](https://github.com/bitly/go-simplejson)
-* [jsoniter （json-iterator）是一款快且灵活的 JSON 解析器] https://github.com/json-iterator/go()
+* [jsoniter （json-iterator）是一款快且灵活的 JSON 解析器](https://github.com/json-iterator/go)
 
 ###================算法库================
 * [大量算法库](https://github.com/henrylee2cn/algorithm)
