@@ -99,6 +99,23 @@ func IsLocalhost(host string) bool {
 		host == "ipv6-localhost"
 }
 
+//是否是内部IP
+func IsInnerIp(ipStr string) bool {
+	if !CheckIp(ipStr) {
+		return false
+	}
+	inputIpNum := InetAton(ipStr)
+	innerIpA := InetAton("10.255.255.255")
+	innerIpB := InetAton("172.16.255.255")
+	innerIpC := InetAton("192.168.255.255")
+	innerIpD := InetAton("100.64.255.255")
+	innerIpF := InetAton("127.255.255.255")
+
+	return inputIpNum>>24 == innerIpA>>24 || inputIpNum>>20 == innerIpB>>20 ||
+		inputIpNum>>16 == innerIpC>>16 || inputIpNum>>22 == innerIpD>>22 ||
+		inputIpNum>>24 == innerIpF>>24
+}
+
 //获取本地所有的IP
 func GetLocalIPs() ([]*net.IP, error) {
 	hostname, err := os.Hostname()
